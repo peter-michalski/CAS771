@@ -1,0 +1,45 @@
+train_images_var_EN = encryptImages_MNIST_EasyAccess(train_images_var0_56_EasyReading, 60000, 28);
+var0_00_0 = train_images_var_EN(:,:,2);
+var0_00_0 = imrotate(var0_00_0, 270);
+var0_00_0 = flipdim(var0_00_0, 2);
+imwrite(var0_00_0, '0_var0_56_en.png');
+var0_00_1 = train_images_var_EN(:,:,4);
+var0_00_1 = imrotate(var0_00_1, 270);
+var0_00_1 = flipdim(var0_00_1, 2);
+imwrite(var0_00_1, '1_var0_56_en.png');
+var0_00_2 = train_images_var_EN(:,:,6);
+var0_00_2 = imrotate(var0_00_2, 270);
+var0_00_2 = flipdim(var0_00_2, 2);
+imwrite(var0_00_2, '2_var0_56_en.png');
+var0_00_3 = train_images_var_EN(:,:,8);
+var0_00_3 = imrotate(var0_00_3, 270);
+var0_00_3 = flipdim(var0_00_3, 2);
+imwrite(var0_00_3, '3_var0_56_en.png');
+var0_00_4 = train_images_var_EN(:,:,3);
+var0_00_4 = imrotate(var0_00_4, 270);
+var0_00_4 = flipdim(var0_00_4, 2);
+imwrite(var0_00_4, '4_var0_56_en.png');
+var0_00_5 = train_images_var_EN(:,:,36);
+var0_00_5 = imrotate(var0_00_5, 270);
+var0_00_5 = flipdim(var0_00_5, 2);
+imwrite(var0_00_5, '5_var0_56_en.png');
+var0_00_6 = train_images_var_EN(:,:,14);
+var0_00_6 = imrotate(var0_00_6, 270);
+var0_00_6 = flipdim(var0_00_6, 2);
+imwrite(var0_00_6, '6_var0_56_en.png');
+var0_00_7 = train_images_var_EN(:,:,16);
+var0_00_7 = imrotate(var0_00_7, 270);
+var0_00_7 = flipdim(var0_00_7, 2);
+imwrite(var0_00_7, '7_var0_56_en.png');
+var0_00_8 = train_images_var_EN(:,:,18);
+var0_00_8 = imrotate(var0_00_8, 270);
+var0_00_8 = flipdim(var0_00_8, 2);
+imwrite(var0_00_8, '8_var0_56_en.png');
+var0_00_9 = train_images_var_EN(:,:,5);
+var0_00_9 = imrotate(var0_00_9, 270);
+var0_00_9 = flipdim(var0_00_9, 2);
+imwrite(var0_00_9, '9_var0_56_en.png');
+
+
+
+
