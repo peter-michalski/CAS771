@@ -1,0 +1,789 @@
+\documentclass[12pt, titlepage]{article}
+\usepackage{amsmath, mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{xr}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{xfrac}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+
+\usepackage[round]{natbib}
+
+%\usepackage{refcheck}
+
+\hypersetup{
+    bookmarks=true,         % show bookmarks bar?
+      colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+
+
+% For easy change of table widths
+\newcommand{\colZwidth}{1.0\textwidth}
+\newcommand{\colAwidth}{0.13\textwidth}
+\newcommand{\colBwidth}{0.82\textwidth}
+\newcommand{\colCwidth}{0.1\textwidth}
+\newcommand{\colDwidth}{0.05\textwidth}
+\newcommand{\colEwidth}{0.8\textwidth}
+\newcommand{\colFwidth}{0.17\textwidth}
+\newcommand{\colGwidth}{0.5\textwidth}
+\newcommand{\colHwidth}{0.28\textwidth}
+
+% Used so that cross-references have a meaningful prefix
+\newcounter{defnum} %Definition Number
+\newcommand{\dthedefnum}{GD\thedefnum}
+\newcommand{\dref}[1]{GD\ref{#1}}
+\newcounter{datadefnum} %Datadefinition Number
+\newcommand{\ddthedatadefnum}{DD\thedatadefnum}
+\newcommand{\ddref}[1]{DD\ref{#1}}
+\newcounter{theorynum} %Theory Number
+\newcommand{\tthetheorynum}{T\thetheorynum}
+\newcommand{\tref}[1]{T\ref{#1}}
+\newcounter{tablenum} %Table Number
+\newcommand{\tbthetablenum}{T\thetablenum}
+\newcommand{\tbref}[1]{TB\ref{#1}}
+\newcounter{assumpnum} %Assumption Number
+\newcommand{\atheassumpnum}{P\theassumpnum}
+\newcommand{\aref}[1]{A\ref{#1}}
+\newcounter{goalnum} %Goal Number
+\newcommand{\gthegoalnum}{P\thegoalnum}
+\newcommand{\gsref}[1]{GS\ref{#1}}
+\newcounter{instnum} %Instance Number
+\newcommand{\itheinstnum}{IM\theinstnum}
+\newcommand{\iref}[1]{IM\ref{#1}}
+\newcounter{reqnum} %Requirement Number
+\newcommand{\rthereqnum}{P\thereqnum}
+\newcommand{\rref}[1]{R\ref{#1}}
+\newcounter{lcnum} %Likely change number
+\newcommand{\lthelcnum}{LC\thelcnum}
+\newcommand{\lcref}[1]{LC\ref{#1}}
+
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{Classification of Data Obfuscated By Blurring and Encryption} 
+\author{Peter Michalski}
+\date{\today}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+
+~\newpage
+\pagenumbering{gobble}
+\pagenumbering{arabic}
+
+
+\section{Introduction}
+
+This report covers my project proposal for CAS 771. The topic that I have chosen for my project is Topic 3: Obfuscated image of video classification for attack investigation.\\
+
+\noindent My proposed project will mainly build on the work of Ahmed et al. in the paper titled `Obfuscated image classification for secure-image-centric friend recommendation' \citep{ahmed2018obfuscated} and may include theoretical and/or practical applications of the work of Zhang et al. in the paper titled `Beyond a Gaussian Denoiser: Residual Learning of Deep CNN for Image Denoising' \citep{zhang2017beyond}. A summary of these papers can be found in Section \ref{Related_Work} Related Work.\\
+
+\section{Problem Statement}\label{ps}
+There is considerable research that has been done on the subject of obfuscated image classification using neural networks. Recent research, some of which is outlined in Section \ref{Related_Work}, focuses on the classification of images that have been obfuscated using blurring or encryption. First, this project aims to use a current classification model to classify images that have been blurred and encrypted, and then analyze the results. The second half of this project aims to explore the development of a new model by testing the combination of different methods to classify images that have been blurred and encrypted.
+
+\section{Motivations}\label{motivations}
+There are several applications for which this project could contribute to developing a solution:
+
+\subsection{Grainy Photos Uploaded for Secure Recommendation}
+In this scenario, noisy photos and/or videos are encrypted and uploaded to a cloud server which then classifies the images for product and/or friend recommendations. The videos are encrypted due to security risks with the cloud server, including due to a scenario where the cloud server is a third party service tasked with classification but without the authority to view unencrypted content. This is a similar application to the work of Ahmed et al. discussed in Section \ref{Related_Work}; however, the subject would be uploading noisy photos or video frames due to a poor quality camera or unstable recording. In such a scenario the subject would likely be uploading all of their digital content from their hardware without manually filtering for good quality images.
+
+\subsection{Grainy Security Footage Requiring Secure Categorization}
+In this scenario, noisy security photos and/or video frames due to interference or poor hardware are encrypted and sent to storage where categorization of such encrypted passive footage is required. This scenario could occur if a third party service is tasked with classification, perhaps for the sake of some general security analysis, but does not have the authority to view unencrypted content. The scenario could similarly occur if the same party that recorded the footage is tasked with classification, once again for the sake of general security analysis, but also without the authority to view unencrypted content. The latter scenario could be a government entity that records clandestine security footage for analysis but does not have the legal authority to hold the unencrypted footage, perhaps due to privacy laws. 
+
+
+\section{Objectives}\label{objectives}
+The first objective of this study is to classify obfuscated images, using current image classification models, that have been both blurred and encrypted. This is novel as currently classification of obfuscated images deals with images that have been either blurred or encrypted. The second objective is to begin work on a novel classifier that will be specifically designed to classify images that have been blurred and then encrypted.
+
+\section{Related Work} \label{Related_Work}
+There are several papers that I will focus on from the onset of my project:
+\begin{enumerate}
+	\item ``Obfuscated image classification for secure image-centric friend recommendation" by Ahmed et al.\citep{ahmed2018obfuscated}:\\
+	
+	This paper focuses on classification of images that have been obfuscated using one of several techniques, including blurring or encryption. The motivation for the paper is a scenario where a third party will use uploaded images, which have been obfuscated for security reasons, to create friend recommendations. The paper uses Gaussian blurring in two dimensions and AES-128 encryption in ECB block cipher mode for such obfuscation. The paper focuses on MNIST, CIFAR-10, and MirFlickr-25K data sets. Ahmed et al. use an auto-encoder and a deep convolutional neural network to accomplish the task. The results were over a 79 percent correct classification on MNIST and over 68 percent on CIFAR-10.\\
+	
+	
+	\item ``Beyond a Gaussian Denoiser: Residual Learning of Deep CNN for Image Denoising" by Zhang et al.\citep{zhang2017beyond}:\\
+	
+	This paper focuses on a feed forward denoising convolutional neural networks - specifically for Gaussian denoising. The proposed DnCNN uses residual learning formulation to learn and batch normalization to improve speed and performance. Residual learning uses residual mapping to allow information to flow more easily between layers of a deep neural network
+	Batch normalization alleviates the `internal covariate shift' by incorporating a normalization step and a scale and shift step. The proposed model has a convolutional and rectified linear unit (ReLU) first layer which uses filters to generate feature maps and ReLU for nonlinearlity. 
+	The model then has several convolutional, batch normalization, and ReLU layers. Finally a convolutional layer is used to reconstruct the output. The results of this model are a higher peak signal to noise ratio (PSNR) than competing denoisers on the BSD68 data set. 
+\end{enumerate}
+
+\section{Research Questions}\label{rq}
+\begin{enumerate}
+	\item How effective is the classifier from Ahmed et al.'s paper on MNIST and CIFAR-10 data sets when the images have first been blurred using the Gaussian technique (across varying standard deviations) and then encrypted using AES-128 ECB?
+	\item Can Ahmed et al's classifier be improved to classify blurred and then encrypted images using the residual learning and batch normalization techniques from Zhang et al.'s paper?
+\end{enumerate}
+
+\section{Basic Ideas and Methods}\label{im}
+In order to accomplish my first objective I will begin by blurring and then encrypting both sets of data, MNIST and CIFAR-10, using Gaussian noise with varied standard deviation (0.0 to 192.0 in 16.0 standard deviation increments). I will use the MATLAB filtering toolbox \emph{fspecial} to accomplish this. I will then use the library \emph{JImageEncryptor} to encrypt the images in AES-128 encruption in ECBmode. I will finish by classifying the images using an implementation of the auto-encoder and Deep Neural Network model found in Ahmed et al. paper and analyzing the results across the varied Gaussian standard deviations.\\
+
+\noindent In order to accomplish the second objective I will begin the preparatory work to improve the classifier found in Ahmed et al.'s paper by modifying it to include the residual learning and batch normalization techniques that are discussed in Zhang et al.'s paper. If it can be implemented within the project time frame, I will classify blurred and encrypted images and analyze the results.
+
+\section{Expected Results}\label{er}
+\subsection{Objective 1 - Classifying blurred and encrypted images using Ahmed er al.'s model}
+Low standard deviation Gaussian blurring ($\sigma$ $<$ 48):\\ I expect the classification results to be similar to Ahmed et al. results for AES-ECB encryption. I expect MNIST classification to be correct in roughly 83.93 percent of cases, and CIFAR-10 classification to be correct in roughly 68.529 percent of cases.\\
+
+\noindent High standard deviation Gaussian blurring ($\sigma$ $>$ 144):\\ I expect the classification results to be lower than than the product of Ahmed et al. results for AES-ECB encryption and Gaussian blurring.  I expect MNIST classification to be correct in less than 80.51 percent of cases, and CIFAR-10 classification to be correct in less than 50.51 percent of cases.\\
+
+\subsection{Objective 2 - Classifying blurred and encrypted images using Ahmed er al.'s model modified with  batch normalization}
+I expect at the minimum to be able to lay the ground work for a modified Ahmed et al classifier with batch normalization. If this exploratory work is successfully implemented I expect the following classification results:\\
+
+\noindent Low standard deviation Gaussian blurring ($\sigma$ $<$ 48):\\ I expect the classification results to be higher than Ahmed et al. results for AES-ECB encryption. I expect MNIST classification to be correct in more than 83.93 percent of cases, and CIFAR-10 classification to be correct in more than 68.529 percent of cases.\\
+
+\noindent High standard deviation Gaussian blurring ($\sigma$ $>$ 144):\\ I expect the classification results to be higher than than the product of Ahmed et al. results for AES-ECB encryption and Gaussian blurring.  I expect MNIST classification to be correct in more than 80.51 percent of cases, and CIFAR-10 classification to be correct in more than 50.51 percent of cases.\\
+
+\section{Abstract}
+
+Preview of the paper
+
+One paragraph (150 to 250 words)
+
+Summarize the objective, methods, 
+results, and impact
+
+Avoid using abbreviations or citations 
+in the abstract
+
+\section{Introduction}
+
+Social networking sites have leveraged data storage facilities of third parties in their business model. These third party data facilities provide the basic service of storing encrypted user data for the social service provider but could also provide advanced services such as classification of the data. 
+The classified data can be used to make friend or hobby suggestions for the social media user, or could alternatively be used by the social media company or third party for the development of privacy protected meta-data for resale. 
+
+Currently studies have focused on the classification of data that has been obfuscated by blurring or encryption techniques. Ahmed et al have focused on using VGG and auto-encoder networks to classify images that have been blurred and encrypted. 
+
+This study will attempt to use similar VGG and auto-encoder networks from Ahmed et al to classify images that have been obfuscated by both blurring and encryption. The objective of this, using the social media model, is to enable third party data storage facilities to make friend or hobby suggestions or gather meta-data using noisy data. As users are unlikley to upload noisy single images to social media sites, our model will focus on noisy data that is uploaded in the form of video frames. A poor quality video camera, electrical interference, and unstable recording could result in a non negligible amount of noisy video frames uploaded into the third party server. This study will attempt to measure the effectiveness of classification of objects within such noisy frames for the purpose of generating useful user data. 
+
+Motivation: (mix with above)
+In this scenario, noisy photos and/or videos are encrypted and uploaded to a cloud server which then classifies the images for product and/or friend recommendations. The videos are encrypted due to security risks with the cloud server, including due to a scenario where the cloud server is a third party service tasked with classification but without the authority to view unencrypted content. This is a similar application to the work of Ahmed et al. discussed in Section \ref{Related_Work}; however, the subject would be uploading noisy photos or video frames due to a poor quality camera or unstable recording. In such a scenario the subject would likely be uploading all of their digital content from their hardware without manually filtering for good quality images.
+
+Impact: 
+Along with the scenario listed above, the impact of this research can be extended to any application that may attempt to classify noisy data that has been encrypted for the sake of privacy. Noisy passive security camera footage may be classified by third party data storage systems. Analog data that is securely stored can also be classified for anomalies or meta-features by third party storage systems. Overall, the impact of the study will reveal how effective the studies classification models are in extracting features from over processed data. 
+
+
+The VGG and auto-encoder models found in Ahmed et al have not been used to classify images that have been blurred and then encrypted. We will first use these models because... their strengths are... weaknesses may be...
+
+Upon classification using the above models, we will attempt to add... this could have the effect of...
+
+The majo rcontributions are...ahmed et al...other paper...vgg...eutoencoder..
+
+The organization of the paper is...
+
+
+
+the introduction addresses what the study will entail. 
+
+What is the problem to be solved
+
+Why it is important (motivation, impact)
+
+Why your solution is novel and suitable 
+to solve the problem
+
+Why previous efforts do not work
+
+What is the brief idea
+
+What are the major Contributions
+
+Organization of the paper
+
+
+\section{Related Work}
+The problem addressed in this paper is the classification of retrieved objects from obfuscated data. The works discussed below address related studies and relevant data classification approaches.
+
+\begin{enumerate}
+	\item ``Obfuscated image classification for secure image-centric friend recommendation" by Ahmed et al.\citep{ahmed2018obfuscated}:\\
+	
+	Ahmed et al. focus on the classification of images that have been obfuscated using one of several techniques, including blurring or encryption. Their motivation is a scenario where a third party will need to classify secure private social media images for the purpose of friend recommendations. 
+	
+	\begin{figure}[h!]
+		\begin{center}
+			\includegraphics[width=0.8\textwidth]{ahmed_social_model}
+			\caption{Social Model Architecture}
+			\label{Ahmed_social_model}
+		\end{center}
+	\end{figure}
+	
+	
+	They use Gaussian blurring in two dimensions and AES-128 encryption in ECB block cipher mode for such obfuscation of MNIST, CIFAR-10, and MirFlickr-25K data sets. Ahmed et al. classify these obfuscated data-sets using an auto-encoder neural network as well as a deep convolutional neural network based on Simonyan and Zisserman's Visual Geometry Group (VGG) \cite{simonyan2014very}. Specifically, they classify encrypted images using auto-encoder and blurred images using a deep convolutional network. 
+	The results are discussed in Section \ref{Background} of this report. \\
+	
+	\item ``Very Deep Convolutional Networks for Large-Scale Image Recognition"
+	\citep{simonyan2014very}:
+	Simonyan and Zisserman evaluate networks of increased depth, 11-19 layers, and very small convolutional filters (3 x 3). They describe several network configurations for validating and classifying 224 x 224 RGB images. The networks incorporate several convolutional layers and filters, several max-pooling layers, and several fully-connected layers. The hidden layers of their networks are equipped with ReLU.
+	
+	\begin{figure}[h!]
+		\begin{center}
+			\includegraphics[width=0.8\textwidth]{ConvNet}
+			\caption{ConvNet Configurations}
+			\label{ConvNet}
+		\end{center}
+	\end{figure}
+	
+	The ConvNet training is carried out by optimizing the multinational logistic regression objective using mini-batch gradient descent. The paper demonstrated that an increased representation depth is beneficial for classification accuracy.
+	
+	\item ``Beyond a Gaussian Denoiser: Residual Learning of Deep CNN for Image Denoising" by Zhang et al.\citep{zhang2017beyond}:\\
+	
+	REMOVE RESIDUAL LEARNING
+	
+	This paper focuses on a feed forward denoising convolutional neural networks - specifically for Gaussian denoising. The proposed DnCNN uses residual learning formulation to learn and batch normalization to improve speed and performance. Residual learning uses residual mapping to allow information to flow more easily between layers of a deep neural network
+	Batch normalization alleviates the `internal covariate shift' by incorporating a normalization step and a scale and shift step.
+	
+	The contributions of this work are summarized as follows:
+	
+	We propose an end-to-end trainable deep CNN for Gaussian denoising. In contrast to the existing deep neural network-based methods which directly estimate the latent clean image, the network adopts the residual learning strategy to remove the latent clean image from noisy observation.
+	
+	We find that residual learning and batch normalization can greatly benefit the CNN learning as they can not only speed up the training but also boost the denoising performance. For Gaussian denoising with a certain noise level, DnCNN outperforms state-of-the-art methods in terms of both quantitative metrics and visual quality.
+	
+	Our DnCNN can be easily extended to handle general image denoising tasks. We can train a single DnCNN model for blind Gaussian denoising, and achieve better performance than the competing methods trained for a specific noise level. Moreover, it is promising to solve three general image denoising tasks, i.e., blind Gaussian denoising, SISR, and JPEG deblocking, with only a single DnCNN model.
+	
+	 The proposed model of the paper has a convolutional and rectified linear unit (ReLU) first layer which uses filters to generate feature maps and ReLU for nonlinearlity. The model then has several convolutional, batch normalization, and ReLU layers. Finally a convolutional layer is used to reconstruct the output. The results of this model are a higher peak signal to noise ratio (PSNR) than competing denoisers on the BSD68 data set. 
+	
+	Extensive experiments show that, our DnCNN trained with a certain noise level can yield better Gaussian denoising results than state-of-the-art methods 
+\end{enumerate}
+\section{Background}\label{Background}
+
+discuss VGGNet and autoencoder, as well as batch normalization
+
+----from the paper:
+
+
+2) Batch Normalization:
+
+Mini-batch stochastic gradient descent (SGD) has been widely used in training CNN models. Despite the simplicity and effectiveness of mini-batch SGD, its training efficiency is largely reduced by internal covariate shift [28], i.e., changes in the distributions of internal nonlinearity inputs during training. Batch normalization [28] is proposed to alleviate the internal covariate shift by incorporating a normalization step and a scale and shift step before the nonlinearity in each layer. For batch normalization, only two parameters per activation are added, and they can be updated with back-propagation. Batch normalization enjoys several merits, such as fast training, better performance, and low sensitivity to initialization. For further details on batch normalization, please refer to [28].
+
+By far, no work has been done on studying batch normalization for CNN-based image denoising. We empirically find that, the integration of batch normalization can result in fast and stable training and better denoising performance.
+
+----
+
+
+
+The background discusses existing data on your topic, the problem statement is what you identify as an issue with supporting data. 
+
+Have figures here from the related work.
+
+The pr
+
+
+
+Maybe problem statement at end of this?
+
+Also view her email to me
+
+\section{Methodology}
+
+Our study will focus on classification of obfuscated data by blurring and encryption using models similar to those used by Ahmed et al. - a VGGNet and an autoencoder network.
+
+We will be examining classification of 4 sets of data on both the VGG and autoencode style models found in Ahmed et al. We will then re-examine classification of these 4 sets on these 2 models after the models have been adjusted to include 
+
+
+\subsection{Image Obfuscation}
+We will be using th MNIST dataset to conduct our classification....describe it.
+
+The first set of data will be original MNIST, the second set will be MNIST obfuscated by blurring using Gaussian..., the third set will be MNIST obfuscated by encrypted using block encrytpion, the fourth will be MNIST obfuscated blurred using Gaussian and then encrptyed using block encyprtion. 
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{MNIST_BASE}
+		\caption{MNIST Image Sample}
+		\label{MNIST_BASE}
+	\end{center}
+\end{figure}
+
+
+Obfuscation of the data using the blurred method will be conducted...the blurred will be conducted along a range of xxxx values.  
+
+ For the blurring, we have used the Matlab image filtering toolbox (online https://www.mathworks.com/help/images/ref/fspecial.html; accessed 20.04.17). 
+ 
+ 
+ \begin{figure}[h!]
+ 	\begin{center}
+ 		\includegraphics[width=0.8\textwidth]{MNIST_BLUR}
+ 		\caption{Blurred MNIST}
+ 		\label{MNIST_BLURRED}
+ 	\end{center}
+ \end{figure}
+
+ 
+ Obfuscation of the data using the encryption method will be conducted using block encryption...link..how does block encrpytion work? state simialr to aes ecb 128 used by ahmed et al..
+ 
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{MNIST_EN}
+		\caption{Encrypted MNIST}
+		\label{MNIST_ENCRYPTED}
+	\end{center}
+\end{figure}
+
+
+Blurring and encryption will combine...along the range...
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{MNIST_BLUR_ER}
+		\caption{Blurred and Encrypted MNIST}
+		\label{MNIST_BLURRED_EN}
+	\end{center}
+\end{figure} 
+ 
+\subsection{Basic VGGNet} 
+
+\subsection{Basic Autoencoder} 
+
+\subsection{Modified VGGNet} 
+
+\subsection{Modified Autoencoder} 
+ 
+\section{Evaluations}
+\subsection{Basic VGGNet} 
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			MNIST & 0.9931\\
+			\hline
+		\end{tabular}
+		\caption{Original MNIST Classification Results}
+		\label{table:basicVGG_MNIST}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			Encrypted-Only MNIST & 0.9603\\
+			\hline
+		\end{tabular}
+		\caption{Encrypted Original MNIST Classification Results}
+		\label{table:basicVGG_Encryption}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			Var0\_04 & 0.9904\\
+			\hline
+			Var0\_12 & 0.9883\\
+			\hline
+			Var0\_20 & 0.9763\\
+			\hline
+			Var0\_28 & 0.9656\\
+			\hline
+			Var0\_36 & 0.9566\\
+			\hline
+			Var0\_44 & 0.9441\\
+			\hline
+			Var0\_52 & 0.9282\\
+			\hline
+			Var0\_60 & 0.8960\\
+			\hline
+		\end{tabular}
+		\caption{Blurred MNIST Classification Results}
+		\label{table:basicVGG_Blurred}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			0\_04\_en & 0.5629\\
+			\hline
+			0\_12\_en & 0.5794\\
+			\hline
+			0\_20\_en & 0.5781\\
+			\hline
+			0\_28\_en & 0.5599\\
+			\hline
+			0\_36\_en & 0.5609\\
+			\hline
+			0\_44\_en & 0.4866\\
+			\hline
+			0\_52\_en & 0.4878\\
+			\hline
+			0\_60\_en & 0.4729\\
+			\hline
+		\end{tabular}
+		\caption{Blurred and Encrypted MNIST Classification Results}
+		\label{table:basicVGG_BlurredEncrypted}
+	\end{center}
+\end{table}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1.0\textwidth]{O_VGG_BL_vs_BEN}
+		\caption{Original VGG Accuracy Comparison}
+		\label{GRAPH_OriginalVGG}
+	\end{center}
+\end{figure} 
+
+~\newpage
+\subsection{Modified VGGNet}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			MNIST & 0.9939\\
+			\hline
+		\end{tabular}
+		\caption{Original MNIST Classification Results}
+		\label{table:modVGG_MNIST}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			Encrypted-Only MNIST & 0.9821\\
+			\hline
+		\end{tabular}
+		\caption{Encrypted Original MNIST Classification Results}
+		\label{table:modVGG_Encryption}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			Var0\_04 & 0.9921\\
+			\hline
+			Var0\_12 & 0.9891\\
+			\hline
+			Var0\_20 & 0.9812\\
+			\hline
+			Var0\_28 & 0.9704\\
+			\hline
+			Var0\_36 & 0.9585\\
+			\hline
+			Var0\_44 & 0.9468\\
+			\hline
+			Var0\_52 & 0.9298\\
+			\hline
+			Var0\_60 & 0.9031\\
+			\hline
+		\end{tabular}
+		\caption{Blurred MNIST Classification Results}
+		\label{table:modVGG_Blurred}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			0\_04\_en & 0.9140\\
+			\hline
+			0\_12\_en & 0.9076\\
+			\hline
+			0\_20\_en & 0.8942\\
+			\hline
+			0\_28\_en & 0.8813\\
+			\hline
+			0\_36\_en & 0.8688\\
+			\hline
+			0\_44\_en & 0.8491\\
+			\hline
+			0\_52\_en & 0.8323\\
+			\hline
+			0\_60\_en & 0.8106\\
+			\hline
+		\end{tabular}
+		\caption{Blurred and Encrypted MNIST Classification Results}
+		\label{table:modVGG_BlurredEncrypted}
+	\end{center}
+\end{table} 
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1.0\textwidth]{Mod_VGG_BL_vs_BEN}
+		\caption{Modified VGG Accuracy Comparison}
+		\label{GRAPH_ModifiedVGG}
+	\end{center}
+\end{figure} 
+
+~\newpage
+\subsection{VGGNet Analysis} 
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1.0\textwidth]{Mod_vs_Or_VGG_BL}
+		\caption{VGG Accuracy Comparison - Blurred}
+		\label{GRAPH_COMP_VGG_BL}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1.0\textwidth]{Mod_vs_Or_VGG_BEN}
+		\caption{VGG Accuracy Comparison - Blurred and Encrypted}
+		\label{GRAPH_COMP_VGG_BEN}
+	\end{center}
+\end{figure}
+
+~\newpage
+\subsection{Basic Autoencoder} 
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			MNIST & 0.9864\\
+			\hline
+		\end{tabular}
+		\caption{Original MNIST Classification Results}
+		\label{table:basicAE_MNIST}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			Encrypted-Only MNIST & 0.9698\\
+			\hline
+		\end{tabular}
+		\caption{Encrypted Original MNIST Classification Results}
+		\label{table:basicAE_Encryption}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			Var0\_04 & 0.9894\\
+			\hline
+			Var0\_12 & 0.9838\\
+			\hline
+			Var0\_20 & 0.9739\\
+			\hline
+			Var0\_28 & 0.9644\\
+			\hline
+			Var0\_36 & 0.9461\\
+			\hline
+			Var0\_44 & 0.9147\\
+			\hline
+			Var0\_52 & 0.9193\\
+			\hline
+			Var0\_60 & 0.8977\\
+			\hline
+		\end{tabular}
+		\caption{Blurred MNIST Classification Results}
+		\label{table:basicAE_Blurred}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			0\_04\_en & 0.4688\\
+			\hline
+			0\_12\_en & 0.4365\\
+			\hline
+			0\_20\_en & 0.4301\\
+			\hline
+			0\_28\_en & 0.3193\\
+			\hline
+			0\_36\_en & 0.1729\\
+			\hline
+			0\_44\_en & DNC\\
+			\hline
+			0\_52\_en & DNC\\
+			\hline
+			0\_60\_en & DNC\\
+			\hline
+		\end{tabular}
+		\caption{Blurred and Encrypted MNIST Classification Results}
+		\label{table:basicAE_BlurredEncrypted}
+	\end{center}
+\end{table}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1.0\textwidth]{OAE_B_vs_BEN}
+		\caption{Original Autoencoder Accuracy Comparison}
+		\label{GRAPH_OriginalAE}
+	\end{center}
+\end{figure} 
+
+\~newpage
+\subsection{Modified Autoencoder} 
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			MNIST & 0.9865\\
+			\hline
+		\end{tabular}
+		\caption{Original MNIST Classification Results}
+		\label{table:modAE_MNIST}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			Encrypted-Only MNIST & 0.9727\\
+			\hline
+		\end{tabular}
+		\caption{Encrypted Original MNIST Classification Results}
+		\label{table:modAE_Encryption}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			Var0\_04 & 0.9867\\
+			\hline
+			Var0\_12 & 0.9823\\
+			\hline
+			Var0\_20 & 0.9756\\
+			\hline
+			Var0\_28 & 0.9649\\
+			\hline
+			Var0\_36 & 0.9478\\
+			\hline
+			Var0\_44 & 0.9382\\
+			\hline
+			Var0\_52 & 0.9266\\
+			\hline
+			Var0\_60 & 0.9093\\
+			\hline
+		\end{tabular}
+		\caption{Blurred MNIST Classification Results}
+		\label{table:modAE_Blurred}
+	\end{center}
+\end{table}
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\hline
+			\textbf{Data-Set} & \textbf{Accuracy}\\
+			\hline
+			0\_04\_en & 0.8656\\
+			\hline
+			0\_12\_en & 0.8152\\
+			\hline
+			0\_20\_en & 0.8433\\
+			\hline
+			0\_28\_en & 0.8311\\
+			\hline
+			0\_36\_en & 0.8155\\
+			\hline
+			0\_44\_en & 0.7766\\
+			\hline
+			0\_52\_en & 0.7864\\
+			\hline
+			0\_60\_en & 0.7504\\
+			\hline
+		\end{tabular}
+		\caption{Blurred and Encrypted MNIST Classification Results}
+		\label{table:modAE_BlurredEncrypted}
+	\end{center}
+\end{table}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1.0\textwidth]{Mod_AE_BL_vs_BEN}
+		\caption{Modified Autoencoder Accuracy Comparison}
+		\label{GRAPH_ModifiedAE}
+	\end{center}
+\end{figure} 
+
+~\newpage
+\subsection{Autoencoder Analysis}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1.0\textwidth]{Mod_vs_Or_AE_BL}
+		\caption{Autoencoder Accuracy Comparison - Blurred}
+		\label{GRAPH_COMP_AE_BL}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1.0\textwidth]{Mod_vs_Or_AE_BEN}
+		\caption{Autoencoder Accuracy Comparison - Blurred and Encrypted}
+		\label{GRAPH_COMP_AE_BEN}
+	\end{center}
+\end{figure}
+
+~\newpage 
+
+\section{Conclusions}
+\section{Acknowledgments}
+
+teacher and autoencoder website, and https://www.floydhub.com/
+
+
+\newpage
+
+\bibliographystyle {plainnat}
+\bibliography {../../References}
+
+
+
+\end{document}
