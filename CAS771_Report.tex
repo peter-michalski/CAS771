@@ -89,68 +89,6 @@
 \pagenumbering{gobble}
 \pagenumbering{arabic}
 
-
-\section{Introduction}
-
-This report covers my project proposal for CAS 771. The topic that I have chosen for my project is Topic 3: Obfuscated image of video classification for attack investigation.\\
-
-\noindent My proposed project will mainly build on the work of Ahmed et al. in the paper titled `Obfuscated image classification for secure-image-centric friend recommendation' \citep{ahmed2018obfuscated} and may include theoretical and/or practical applications of the work of Zhang et al. in the paper titled `Beyond a Gaussian Denoiser: Residual Learning of Deep CNN for Image Denoising' \citep{zhang2017beyond}. A summary of these papers can be found in Section \ref{Related_Work} Related Work.\\
-
-\section{Problem Statement}\label{ps}
-There is considerable research that has been done on the subject of obfuscated image classification using neural networks. Recent research, some of which is outlined in Section \ref{Related_Work}, focuses on the classification of images that have been obfuscated using blurring or encryption. First, this project aims to use a current classification model to classify images that have been blurred and encrypted, and then analyze the results. The second half of this project aims to explore the development of a new model by testing the combination of different methods to classify images that have been blurred and encrypted.
-
-\section{Motivations}\label{motivations}
-There are several applications for which this project could contribute to developing a solution:
-
-\subsection{Grainy Photos Uploaded for Secure Recommendation}
-In this scenario, noisy photos and/or videos are encrypted and uploaded to a cloud server which then classifies the images for product and/or friend recommendations. The videos are encrypted due to security risks with the cloud server, including due to a scenario where the cloud server is a third party service tasked with classification but without the authority to view unencrypted content. This is a similar application to the work of Ahmed et al. discussed in Section \ref{Related_Work}; however, the subject would be uploading noisy photos or video frames due to a poor quality camera or unstable recording. In such a scenario the subject would likely be uploading all of their digital content from their hardware without manually filtering for good quality images.
-
-\subsection{Grainy Security Footage Requiring Secure Categorization}
-In this scenario, noisy security photos and/or video frames due to interference or poor hardware are encrypted and sent to storage where categorization of such encrypted passive footage is required. This scenario could occur if a third party service is tasked with classification, perhaps for the sake of some general security analysis, but does not have the authority to view unencrypted content. The scenario could similarly occur if the same party that recorded the footage is tasked with classification, once again for the sake of general security analysis, but also without the authority to view unencrypted content. The latter scenario could be a government entity that records clandestine security footage for analysis but does not have the legal authority to hold the unencrypted footage, perhaps due to privacy laws. 
-
-
-\section{Objectives}\label{objectives}
-The first objective of this study is to classify obfuscated images, using current image classification models, that have been both blurred and encrypted. This is novel as currently classification of obfuscated images deals with images that have been either blurred or encrypted. The second objective is to begin work on a novel classifier that will be specifically designed to classify images that have been blurred and then encrypted.
-
-\section{Related Work} \label{Related_Work}
-There are several papers that I will focus on from the onset of my project:
-\begin{enumerate}
-	\item ``Obfuscated image classification for secure image-centric friend recommendation" by Ahmed et al.\citep{ahmed2018obfuscated}:\\
-	
-	This paper focuses on classification of images that have been obfuscated using one of several techniques, including blurring or encryption. The motivation for the paper is a scenario where a third party will use uploaded images, which have been obfuscated for security reasons, to create friend recommendations. The paper uses Gaussian blurring in two dimensions and AES-128 encryption in ECB block cipher mode for such obfuscation. The paper focuses on MNIST, CIFAR-10, and MirFlickr-25K data sets. Ahmed et al. use an auto-encoder and a deep convolutional neural network to accomplish the task. The results were over a 79 percent correct classification on MNIST and over 68 percent on CIFAR-10.\\
-	
-	
-	\item ``Beyond a Gaussian Denoiser: Residual Learning of Deep CNN for Image Denoising" by Zhang et al.\citep{zhang2017beyond}:\\
-	
-	This paper focuses on a feed forward denoising convolutional neural networks - specifically for Gaussian denoising. The proposed DnCNN uses residual learning formulation to learn and batch normalization to improve speed and performance. Residual learning uses residual mapping to allow information to flow more easily between layers of a deep neural network
-	Batch normalization alleviates the `internal covariate shift' by incorporating a normalization step and a scale and shift step. The proposed model has a convolutional and rectified linear unit (ReLU) first layer which uses filters to generate feature maps and ReLU for nonlinearlity. 
-	The model then has several convolutional, batch normalization, and ReLU layers. Finally a convolutional layer is used to reconstruct the output. The results of this model are a higher peak signal to noise ratio (PSNR) than competing denoisers on the BSD68 data set. 
-\end{enumerate}
-
-\section{Research Questions}\label{rq}
-\begin{enumerate}
-	\item How effective is the classifier from Ahmed et al.'s paper on MNIST and CIFAR-10 data sets when the images have first been blurred using the Gaussian technique (across varying standard deviations) and then encrypted using AES-128 ECB?
-	\item Can Ahmed et al's classifier be improved to classify blurred and then encrypted images using the residual learning and batch normalization techniques from Zhang et al.'s paper?
-\end{enumerate}
-
-\section{Basic Ideas and Methods}\label{im}
-In order to accomplish my first objective I will begin by blurring and then encrypting both sets of data, MNIST and CIFAR-10, using Gaussian noise with varied standard deviation (0.0 to 192.0 in 16.0 standard deviation increments). I will use the MATLAB filtering toolbox \emph{fspecial} to accomplish this. I will then use the library \emph{JImageEncryptor} to encrypt the images in AES-128 encruption in ECBmode. I will finish by classifying the images using an implementation of the auto-encoder and Deep Neural Network model found in Ahmed et al. paper and analyzing the results across the varied Gaussian standard deviations.\\
-
-\noindent In order to accomplish the second objective I will begin the preparatory work to improve the classifier found in Ahmed et al.'s paper by modifying it to include the residual learning and batch normalization techniques that are discussed in Zhang et al.'s paper. If it can be implemented within the project time frame, I will classify blurred and encrypted images and analyze the results.
-
-\section{Expected Results}\label{er}
-\subsection{Objective 1 - Classifying blurred and encrypted images using Ahmed er al.'s model}
-Low standard deviation Gaussian blurring ($\sigma$ $<$ 48):\\ I expect the classification results to be similar to Ahmed et al. results for AES-ECB encryption. I expect MNIST classification to be correct in roughly 83.93 percent of cases, and CIFAR-10 classification to be correct in roughly 68.529 percent of cases.\\
-
-\noindent High standard deviation Gaussian blurring ($\sigma$ $>$ 144):\\ I expect the classification results to be lower than than the product of Ahmed et al. results for AES-ECB encryption and Gaussian blurring.  I expect MNIST classification to be correct in less than 80.51 percent of cases, and CIFAR-10 classification to be correct in less than 50.51 percent of cases.\\
-
-\subsection{Objective 2 - Classifying blurred and encrypted images using Ahmed er al.'s model modified with  batch normalization}
-I expect at the minimum to be able to lay the ground work for a modified Ahmed et al classifier with batch normalization. If this exploratory work is successfully implemented I expect the following classification results:\\
-
-\noindent Low standard deviation Gaussian blurring ($\sigma$ $<$ 48):\\ I expect the classification results to be higher than Ahmed et al. results for AES-ECB encryption. I expect MNIST classification to be correct in more than 83.93 percent of cases, and CIFAR-10 classification to be correct in more than 68.529 percent of cases.\\
-
-\noindent High standard deviation Gaussian blurring ($\sigma$ $>$ 144):\\ I expect the classification results to be higher than than the product of Ahmed et al. results for AES-ECB encryption and Gaussian blurring.  I expect MNIST classification to be correct in more than 80.51 percent of cases, and CIFAR-10 classification to be correct in more than 50.51 percent of cases.\\
-
 \section{Abstract}
 
 Preview of the paper
@@ -163,14 +101,15 @@ results, and impact
 Avoid using abbreviations or citations 
 in the abstract
 
+~\newpage
 \section{Introduction}
 
 Social networking sites have leveraged data storage facilities of third parties in their business model. These third party data facilities provide the basic service of storing encrypted user data for the social service provider but could also provide advanced services such as classification of the data. 
 The classified data can be used to make friend or hobby suggestions for the social media user, or could alternatively be used by the social media company or third party for the development of privacy protected meta-data for resale. 
 
-Currently studies have focused on the classification of data that has been obfuscated by blurring or encryption techniques. Ahmed et al have focused on using VGG and auto-encoder networks to classify images that have been blurred and encrypted. 
+Currently studies have focused on the classification of data that has been obfuscated by blurring or encryption techniques. Ahmed et al have focused on using VGGNet and auto-encoder networks to classify images that have been blurred and encrypted. 
 
-This study will attempt to use similar VGG and auto-encoder networks from Ahmed et al to classify images that have been obfuscated by both blurring and encryption. The objective of this, using the social media model, is to enable third party data storage facilities to make friend or hobby suggestions or gather meta-data using noisy data. As users are unlikley to upload noisy single images to social media sites, our model will focus on noisy data that is uploaded in the form of video frames. A poor quality video camera, electrical interference, and unstable recording could result in a non negligible amount of noisy video frames uploaded into the third party server. This study will attempt to measure the effectiveness of classification of objects within such noisy frames for the purpose of generating useful user data. 
+This study will attempt to use similar VGGNet and auto-encoder networks from Ahmed et al to classify images that have been obfuscated by both blurring and encryption. The objective of this, using the social media model, is to enable third party data storage facilities to make friend or hobby suggestions or gather meta-data using noisy data. As users are unlikley to upload noisy single images to social media sites, our model will focus on noisy data that is uploaded in the form of video frames. A poor quality video camera, electrical interference, and unstable recording could result in a non negligible amount of noisy video frames uploaded into the third party server. This study will attempt to measure the effectiveness of classification of objects within such noisy frames for the purpose of generating useful user data. 
 
 Motivation: (mix with above)
 In this scenario, noisy photos and/or videos are encrypted and uploaded to a cloud server which then classifies the images for product and/or friend recommendations. The videos are encrypted due to security risks with the cloud server, including due to a scenario where the cloud server is a third party service tasked with classification but without the authority to view unencrypted content. This is a similar application to the work of Ahmed et al. discussed in Section \ref{Related_Work}; however, the subject would be uploading noisy photos or video frames due to a poor quality camera or unstable recording. In such a scenario the subject would likely be uploading all of their digital content from their hardware without manually filtering for good quality images.
@@ -179,11 +118,11 @@ Impact:
 Along with the scenario listed above, the impact of this research can be extended to any application that may attempt to classify noisy data that has been encrypted for the sake of privacy. Noisy passive security camera footage may be classified by third party data storage systems. Analog data that is securely stored can also be classified for anomalies or meta-features by third party storage systems. Overall, the impact of the study will reveal how effective the studies classification models are in extracting features from over processed data. 
 
 
-The VGG and auto-encoder models found in Ahmed et al have not been used to classify images that have been blurred and then encrypted. We will first use these models because... their strengths are... weaknesses may be...
+The VGGNet and auto-encoder models found in Ahmed et al have not been used to classify images that have been blurred and then encrypted. We will first use these models because... their strengths are... weaknesses may be...
 
 Upon classification using the above models, we will attempt to add... this could have the effect of...
 
-The majo rcontributions are...ahmed et al...other paper...vgg...eutoencoder..
+The majo rcontributions are...ahmed et al...other paper...vggnet...eutoencoder..
 
 The organization of the paper is...
 
@@ -204,12 +143,35 @@ What is the brief idea
 
 What are the major Contributions
 
-Organization of the paper
+Organization of the paper\\
+
+Research Questions:
+\begin{enumerate}
+	\item How effective is the classifier from Ahmed et al.'s paper on MNIST and CIFAR-10 data sets when the images have first been blurred using the Gaussian technique (across varying standard deviations) and then encrypted using AES-128 ECB?
+	\item Can Ahmed et al's classifier be improved to classify blurred and then encrypted images using the residual learning and batch normalization techniques from Zhang et al.'s paper?
+\end{enumerate}
+
+\subsection{Problem Statement}\label{ps}
+There is considerable research that has been done on the subject of obfuscated image classification using neural networks. Recent research, some of which is outlined in Section \ref{Related_Work}, focuses on the classification of images that have been obfuscated using blurring or encryption. First, this project aims to use a current classification model to classify images that have been blurred and encrypted, and then analyze the results. The second half of this project aims to explore the development of a new model by testing the combination of different methods to classify images that have been blurred and encrypted.
+
+\subsection{Motivations}\label{motivations}
+There are several applications for which this project could contribute to developing a solution:
+
+\subsubsection{Grainy Photos Uploaded for Secure Recommendation}
+In this scenario, noisy photos and/or videos are encrypted and uploaded to a cloud server which then classifies the images for product and/or friend recommendations. The videos are encrypted due to security risks with the cloud server, including due to a scenario where the cloud server is a third party service tasked with classification but without the authority to view unencrypted content. This is a similar application to the work of Ahmed et al. discussed in Section \ref{Related_Work}; however, the subject would be uploading noisy photos or video frames due to a poor quality camera or unstable recording. In such a scenario the subject would likely be uploading all of their digital content from their hardware without manually filtering for good quality images.
+
+\subsubsection{Grainy Security Footage Requiring Secure Categorization}
+In this scenario, noisy security photos and/or video frames due to interference or poor hardware are encrypted and sent to storage where categorization of such encrypted passive footage is required. This scenario could occur if a third party service is tasked with classification, perhaps for the sake of some general security analysis, but does not have the authority to view unencrypted content. The scenario could similarly occur if the same party that recorded the footage is tasked with classification, once again for the sake of general security analysis, but also without the authority to view unencrypted content. The latter scenario could be a government entity that records clandestine security footage for analysis but does not have the legal authority to hold the unencrypted footage, perhaps due to privacy laws. 
 
 
+\subsection{Objectives}\label{objectives}
+The first objective of this study is to classify obfuscated images, using current image classification models, that have been both blurred and encrypted. This is novel as currently classification of obfuscated images deals with images that have been either blurred or encrypted. The second objective is to begin work on a novel classifier that will be specifically designed to classify images that have been blurred and then encrypted.
+
+~\newpage
 \section{Related Work}
 The problem addressed in this paper is the classification of retrieved objects from obfuscated data. The works discussed below address related studies and relevant data classification approaches.
 
+Maybe each should be a subsection?
 \begin{enumerate}
 	\item ``Obfuscated image classification for secure image-centric friend recommendation" by Ahmed et al.\citep{ahmed2018obfuscated}:\\
 	
@@ -224,7 +186,7 @@ The problem addressed in this paper is the classification of retrieved objects f
 	\end{figure}
 	
 	
-	They use Gaussian blurring in two dimensions and AES-128 encryption in ECB block cipher mode for such obfuscation of MNIST, CIFAR-10, and MirFlickr-25K data sets. Ahmed et al. classify these obfuscated data-sets using an auto-encoder neural network as well as a deep convolutional neural network based on Simonyan and Zisserman's Visual Geometry Group (VGG) \cite{simonyan2014very}. Specifically, they classify encrypted images using auto-encoder and blurred images using a deep convolutional network. 
+	They use Gaussian blurring in two dimensions and AES-128 encryption in ECB block cipher mode for such obfuscation of MNIST, CIFAR-10, and MirFlickr-25K data sets. Ahmed et al. classify these obfuscated data-sets using an auto-encoder neural network as well as a deep convolutional neural network based on Simonyan and Zisserman's Visual Geometry Group (VGGNet) \cite{simonyan2014very}. Specifically, they classify encrypted images using auto-encoder and blurred images using a deep convolutional network. 
 	The results are discussed in Section \ref{Background} of this report. \\
 	
 	\item ``Very Deep Convolutional Networks for Large-Scale Image Recognition"
@@ -259,10 +221,16 @@ The problem addressed in this paper is the classification of retrieved objects f
 	 The proposed model of the paper has a convolutional and rectified linear unit (ReLU) first layer which uses filters to generate feature maps and ReLU for nonlinearlity. The model then has several convolutional, batch normalization, and ReLU layers. Finally a convolutional layer is used to reconstruct the output. The results of this model are a higher peak signal to noise ratio (PSNR) than competing denoisers on the BSD68 data set. 
 	
 	Extensive experiments show that, our DnCNN trained with a certain noise level can yield better Gaussian denoising results than state-of-the-art methods 
+	
+	\item ``Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift''
+	
+	This is the main batch normalization paper?
 \end{enumerate}
+
+~\newpage
 \section{Background}\label{Background}
 
-discuss VGGNet and autoencoder, as well as batch normalization
+discuss VGGNet and autoencoder, as well as batch normalization, and present results from Ahmed et al (and other paper?) and then point to the results I got from trying to emulate their models (prior to BL + EC or batch normalization)
 
 ----from the paper:
 
@@ -289,22 +257,25 @@ Maybe problem statement at end of this?
 
 Also view her email to me
 
+~\newpage
 \section{Methodology}
 
 Our study will focus on classification of obfuscated data by blurring and encryption using models similar to those used by Ahmed et al. - a VGGNet and an autoencoder network.
 
-We will be examining classification of 4 sets of data on both the VGG and autoencode style models found in Ahmed et al. We will then re-examine classification of these 4 sets on these 2 models after the models have been adjusted to include 
+We will be examining classification of 4 sets of data on both the VGGNet and autoencode style models found in Ahmed et al. We will then re-examine classification of these 4 sets on these 2 models after the models have been adjusted to include 
 
 
 \subsection{Image Obfuscation}
+\subsubsection{Blurring}\label{BlurringMethodology}
+\subsubsection{Encryption}\label{EncryptionMethodology}
 We will be using th MNIST dataset to conduct our classification....describe it.
 
-The first set of data will be original MNIST, the second set will be MNIST obfuscated by blurring using Gaussian..., the third set will be MNIST obfuscated by encrypted using block encrytpion, the fourth will be MNIST obfuscated blurred using Gaussian and then encrptyed using block encyprtion. 
+The first set of data will be non-secure MNIST, the second set will be MNIST obfuscated by blurring using Gaussian..., the third set will be MNIST obfuscated by encrypted using block encrytpion, the fourth will be MNIST obfuscated blurred using Gaussian and then encrptyed using block encyprtion. 
 
 \begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{MNIST_BASE}
-		\caption{MNIST Image Sample}
+		\caption{Non-Secure MNIST Image Samples}
 		\label{MNIST_BASE}
 	\end{center}
 \end{figure}
@@ -312,7 +283,7 @@ The first set of data will be original MNIST, the second set will be MNIST obfus
 
 Obfuscation of the data using the blurred method will be conducted...the blurred will be conducted along a range of xxxx values.  
 
- For the blurring, we have used the Matlab image filtering toolbox (online https://www.mathworks.com/help/images/ref/fspecial.html; accessed 20.04.17). 
+ For the blurring, we have used the Matlab image filtering toolbox imnoise
  
  
  \begin{figure}[h!]
@@ -345,16 +316,23 @@ Blurring and encryption will combine...along the range...
 	\end{center}
 \end{figure} 
  
-\subsection{Basic VGGNet} 
+\subsection{Original VGGNet} 
 
-\subsection{Basic Autoencoder} 
+VGGNet based on .... which we will refer to as 'original VGGNet' in the remainder of this report
 
 \subsection{Modified VGGNet} 
 
+\subsection{Original Autoencoder} 
+
+Autoencoder based on .... which we will refer to as 'original Autoencoder' in the remainder of this report
+
 \subsection{Modified Autoencoder} 
  
+ ~\newpage
 \section{Evaluations}
-\subsection{Basic VGGNet} 
+\subsection{Original VGGNet}\label{EvalOrigVGG}
+
+The classification result for the non-secure MNIST data set is found in Table \ref{table:basicVGG_MNIST}: Non-Secure MNIST Classification Results: Original VGGNet. The data set produced an accuracy of 99.31\% averaged over three tests. This accuracy is similar to the 99.503\% accuracy of Ahmed et al. for non-secure MNIST.\\ 
 
 \begin{table}[!h]
 	\begin{center}
@@ -365,10 +343,12 @@ Blurring and encryption will combine...along the range...
 			MNIST & 0.9931\\
 			\hline
 		\end{tabular}
-		\caption{Original MNIST Classification Results}
+		\caption{Non-Secure MNIST Classification Results: Original VGGNet}
 		\label{table:basicVGG_MNIST}
 	\end{center}
 \end{table}
+
+\noindent The classification result for the encrypted MNIST data set is found in Table \ref{table:basicVGG_Encryption}: Encrypted MNIST Classification Results: Original VGGNet. The data set produced an accuracy of 96.03\% averaged over three tests. This accuracy is significantly greater than the 83.93\% accuracy of Ahmed et al. for encrypted MNIST. This difference is attributed to using a novel simple block encryption algorithm for the purpose of maintaining convergence of our models when classifying images that have been both blurred and encrypted, as outlined in Section \ref{EncryptionMethodology}: Encryption.\\
 
 \begin{table}[!h]
 	\begin{center}
@@ -376,13 +356,15 @@ Blurring and encryption will combine...along the range...
 			\hline
 			\textbf{Data-Set} & \textbf{Accuracy}\\
 			\hline
-			Encrypted-Only MNIST & 0.9603\\
+			Encrypted MNIST & 0.9603\\
 			\hline
 		\end{tabular}
-		\caption{Encrypted Original MNIST Classification Results}
+		\caption{Encrypted MNIST Classification Results: Original VGGNet}
 		\label{table:basicVGG_Encryption}
 	\end{center}
 \end{table}
+
+\noindent The classification result for the blurred MNIST data sets, averaged over three tests, is found in Table \ref{table:basicVGG_Blurred}: Blurred MNIST Classification Results: Original VGGNet. The highest accuracy of the data sets was 99.04\% for the Var0\_04 data set, which has the lowest variance of Gaussian noise at 0.04, as outlined in Section \ref{BlurringMethodology}: Blurring. The lowest accuracy of the data sets was 89.60\% for the Var0\_60 data set, which has the highest variance of Gaussian noise at 0.60. A linear increase in variance is observed to cause an exponential decrease in accuracy. As a comparison, the average classification accuracy in Ahmed et al. for blurred MNIST was 95.93\%, suggesting that our blurring technique has similar effect.
 
 \begin{table}[!h]
 	\begin{center}
@@ -407,10 +389,13 @@ Blurring and encryption will combine...along the range...
 			Var0\_60 & 0.8960\\
 			\hline
 		\end{tabular}
-		\caption{Blurred MNIST Classification Results}
+		\caption{Blurred MNIST Classification Results: Original VGGNet}
 		\label{table:basicVGG_Blurred}
 	\end{center}
 \end{table}
+
+~\newpage
+\noindent The classification result for the blurred and encrypted MNIST data sets, averaged over three tests, is found in Table \ref{table:basicVGG_BlurredEncrypted}: Blurred and Encrypted MNIST Classification Results: Original VGGNet. The highest accuracy of the data sets was 56.29\% for the 0\_04\_en data set, which has the lowest variance of Gaussian noise at 0.04, as outlined in Section \ref{BlurringMethodology}: Blurring. The lowest accuracy of the data sets was 47.29\% for the 0\_60\_en data set, which has the highest variance of Gaussian noise at 0.60. Similar to the blurred MNIST data sets, a linear increase in variance is observed to cause an exponential decrease in accuracy in these blurred and encrypted data sets. The rate of change of accuracy relative to variance of Gaussian noise is inherited from the blurred data sets as they are further encrypted.\\ 
 
 \begin{table}[!h]
 	\begin{center}
@@ -435,21 +420,27 @@ Blurring and encryption will combine...along the range...
 			0\_60\_en & 0.4729\\
 			\hline
 		\end{tabular}
-		\caption{Blurred and Encrypted MNIST Classification Results}
+		\caption{Blurred and Encrypted MNIST Classification Results: Original VGGNet}
 		\label{table:basicVGG_BlurredEncrypted}
 	\end{center}
 \end{table}
 
+~\newpage
+\noindent A graphical presentation of the classification results for the blurred MNIST data sets compared to the blurred and encrypted MNIST data sets can be observed in Figure \ref{GRAPH_OriginalVGG}: Original VGGNet Accuracy Comparison. As stated previously, we can observe that both sets inherit the characteristic that a linear increase in the variance of Gaussian noise results in an exponential decrease in classification accuracy. We can also observe that further encryption has resulted in a profound decrease in classification accuracy for all blurred data sets. While the encrypted-only MNIST produced a high classification accuracy result of 96.03\%, as stated in Table \ref{table:basicVGG_Encryption}, the encryption of the blurred-only data sets with such a mild encryption algorithm has profoundly decreased their classification accuracy, as found in Table \ref{table:basicVGG_BlurredEncrypted} and observed in Figure \ref{GRAPH_OriginalVGG} below. The encryption of the fairly accurate blurred data sets has resulted in a drop of roughly 40\% in accuracy.
+
+
 \begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=1.0\textwidth]{O_VGG_BL_vs_BEN}
-		\caption{Original VGG Accuracy Comparison}
+		\caption{Original VGGNet Accuracy Comparison}
 		\label{GRAPH_OriginalVGG}
 	\end{center}
 \end{figure} 
 
 ~\newpage
-\subsection{Modified VGGNet}
+\subsection{Modified VGGNet}\label{EvalModVGG}
+
+The classification result for the non-secure MNIST data set is found in Table \ref{table:modVGG_MNIST}: Non-Secure MNIST Classification Results: Modified VGGNet. The data set produced an accuracy of 99.39\% averaged over three tests. The accuracy is slightly improved to the 99.31\% accuracy result of the original VGGNet neural network found in Section \ref{EvalOrigVGG}.\\ 
 
 \begin{table}[!h]
 	\begin{center}
@@ -460,10 +451,12 @@ Blurring and encryption will combine...along the range...
 			MNIST & 0.9939\\
 			\hline
 		\end{tabular}
-		\caption{Original MNIST Classification Results}
+		\caption{Non-Secure MNIST Classification Results: Modified VGGNet}
 		\label{table:modVGG_MNIST}
 	\end{center}
 \end{table}
+
+\noindent The classification result for the encrypted MNIST data set is found in Table \ref{table:modVGG_Encryption}: Encrypted MNIST Classification Results: Modified VGGNet. The data set produced an accuracy of 98.21\% averaged over three tests. The change in accuracy is non-negligible when compared to the 96.03\% accuracy of the original VGGNet found in Section \ref{EvalOrigVGG}. The addition of batch normalization to the original VGGNet has decreased inaccurate classification of encrypted MNIST images by roughly half.\\
 
 \begin{table}[!h]
 	\begin{center}
@@ -471,13 +464,15 @@ Blurring and encryption will combine...along the range...
 			\hline
 			\textbf{Data-Set} & \textbf{Accuracy}\\
 			\hline
-			Encrypted-Only MNIST & 0.9821\\
+			Encrypted MNIST & 0.9821\\
 			\hline
 		\end{tabular}
-		\caption{Encrypted Original MNIST Classification Results}
+		\caption{Encrypted MNIST Classification Results: Modified VGGNet}
 		\label{table:modVGG_Encryption}
 	\end{center}
 \end{table}
+
+\noindent The classification result for the blurred MNIST data sets, averaged over three tests, is found in Table \ref{table:modVGG_Blurred}: Blurred MNIST Classification Results: Modified VGGNet. The highest accuracy of the data sets was 99.21\% for the Var0\_04 data set, which has the lowest variance of Gaussian noise at 0.04, as outlined in Section \ref{BlurringMethodology}. The lowest accuracy of the data sets was 90.31\% for the Var0\_60 data set, which has the highest variance of Gaussian noise at 0.60. Similar to the results of the original VGGNet, as found in section \ref{EvalOrigVGG}, a linear increase in variance is observed to cause an exponential decrease in accuracy.
 
 \begin{table}[!h]
 	\begin{center}
@@ -502,10 +497,13 @@ Blurring and encryption will combine...along the range...
 			Var0\_60 & 0.9031\\
 			\hline
 		\end{tabular}
-		\caption{Blurred MNIST Classification Results}
+		\caption{Blurred MNIST Classification Results: Modified VGGNet}
 		\label{table:modVGG_Blurred}
 	\end{center}
 \end{table}
+
+~\newpage
+\noindent The classification result for the blurred and encrypted MNIST data sets, averaged over three tests, is found in Table \ref{table:modVGG_BlurredEncrypted}: Blurred and Encrypted MNIST Classification Results: Modified VGGNet. The highest accuracy of the data sets was 91.40\% for the 0\_04\_en data set, which has the lowest variance of Gaussian noise at 0.04, as outlined in Section \ref{BlurringMethodology}: Blurring. The lowest accuracy of the data sets was 81.06\% for the 0\_60\_en data set, which has the highest variance of Gaussian noise at 0.60. Similar to the results of the original VGGNet found in Section \ref{EvalOrigVGG}, a linear increase in variance is observed to cause an exponential decrease in accuracy in these blurred and encrypted data sets. Section \ref{VGGAnalysis}: VGGNet Analysis addresses the observation that classification accuracy results for blurred and encrypted data sets is significantly higher in the modified VGG when compared to the original VGG.\\ 
 
 \begin{table}[!h]
 	\begin{center}
@@ -530,40 +528,50 @@ Blurring and encryption will combine...along the range...
 			0\_60\_en & 0.8106\\
 			\hline
 		\end{tabular}
-		\caption{Blurred and Encrypted MNIST Classification Results}
+		\caption{Blurred and Encrypted MNIST Classification Results: Modified VGGNet}
 		\label{table:modVGG_BlurredEncrypted}
 	\end{center}
 \end{table} 
 
+~\newpage
+\noindent A graphical presentation of the classification results for the blurred MNIST data sets compared to the blurred and encrypted MNIST data sets can be observed in Figure \ref{GRAPH_ModifiedVGG}: Modified VGGNet Accuracy Comparison. As stated previously, we can observe that both sets inherit the characteristic that a linear increase in the variance of Gaussian noise results in an exponential decrease in classification accuracy. We can also observe that further encryption has resulted in a marginal decrease in classification accuracy for all blurred data sets. While the encrypted-only MNIST produced a high classification accuracy result of 98.21\%, as stated in Table \ref{table:modVGG_Encryption}, the encryption of the blurred-only data sets with such a mild encryption algorithm has marginally decreased their classification accuracy, as found in Table \ref{table:modVGG_BlurredEncrypted} and observed in Figure \ref{GRAPH_ModifiedVGG} below. The encryption of the blurred data sets has resulted in a drop of roughly 10\% in accuracy.
+
 \begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=1.0\textwidth]{Mod_VGG_BL_vs_BEN}
-		\caption{Modified VGG Accuracy Comparison}
+		\caption{Modified VGGNet Accuracy Comparison}
 		\label{GRAPH_ModifiedVGG}
 	\end{center}
 \end{figure} 
 
 ~\newpage
-\subsection{VGGNet Analysis} 
+\subsection{VGGNet Analysis}\label{VGGAnalysis}
+
+The classification results of the original and modified VGGNet for the blurred MNIST data sets can be observed in Figure \ref{GRAPH_COMP_VGG_BL}: VGGNet Accuracy Comparison - Blurred. We observe that the addition of batch normalization has not significantly increased classification accuracy in the modified VGGNet. The exponential effect of linearly increasing the variance of Gaussian noise is seen in both neural networks.\\
 
 \begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=1.0\textwidth]{Mod_vs_Or_VGG_BL}
-		\caption{VGG Accuracy Comparison - Blurred}
+		\caption{VGGNet Accuracy Comparison - Blurred}
 		\label{GRAPH_COMP_VGG_BL}
 	\end{center}
 \end{figure}
 
+~\newpage
+\noindent The classification results of the original and modified VGGNet for the blurred and encrypted MNIST data sets can be observed in Figure \ref{GRAPH_COMP_VGG_BEN}: VGGNet Accuracy Comparison - Blurred and Encrypted. We observe that the addition of batch normalization has significantly increased classification accuracy in the modified VGGNet. The data set with the highest accuracy when using the original VGGNet, 0\_04\_en with 56.29\%, has an accuracy of 91.40\% when using the modified VGGNet. The data set with the lowest accuracy when using the original VGGNet, 0\_60\_en with 47.29\%, has an accuracy of 81.06\% when using the modified VGGNet. The stabilizing effect of batch normalization on internal covariate shift is clear from these results.\\
+
 \begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=1.0\textwidth]{Mod_vs_Or_VGG_BEN}
-		\caption{VGG Accuracy Comparison - Blurred and Encrypted}
+		\caption{VGGNet Accuracy Comparison - Blurred and Encrypted}
 		\label{GRAPH_COMP_VGG_BEN}
 	\end{center}
 \end{figure}
 
 ~\newpage
-\subsection{Basic Autoencoder} 
+\subsection{Original Autoencoder}\label{EvalOrigAE} 
+
+The classification result for the non-secure MNIST data set is found in Table \ref{table:basicAE_MNIST}: Non-Secure MNIST Classification Results: Original Autoencoder. The data set produced an accuracy of 98.64\% averaged over three tests. This accuracy is similar to the 99.503\% accuracy of Ahmed et al. for non-secure MNIST.\\ 
 
 \begin{table}[!h]
 	\begin{center}
@@ -574,10 +582,12 @@ Blurring and encryption will combine...along the range...
 			MNIST & 0.9864\\
 			\hline
 		\end{tabular}
-		\caption{Original MNIST Classification Results}
+		\caption{Non-Secure MNIST Classification Results: Original Autoencoder}
 		\label{table:basicAE_MNIST}
 	\end{center}
 \end{table}
+
+\noindent The classification result for the encrypted MNIST data set is found in Table \ref{table:basicAE_Encryption}: Encrypted MNIST Classification Results: Original Autoencoder. The data set produced an accuracy of 96.98\% averaged over three tests. Similar to the VGGNet model, this accuracy is significantly greater than the 83.93\% accuracy of Ahmed et al. for encrypted MNIST. This difference is attributed to using a novel simple block encryption algorithm for the purpose of maintaining convergence of our models when classifying images that have been both blurred and encrypted, as outlined in Section \ref{EncryptionMethodology}: Encryption.\\
 
 \begin{table}[!h]
 	\begin{center}
@@ -585,13 +595,15 @@ Blurring and encryption will combine...along the range...
 			\hline
 			\textbf{Data-Set} & \textbf{Accuracy}\\
 			\hline
-			Encrypted-Only MNIST & 0.9698\\
+			Encrypted MNIST & 0.9698\\
 			\hline
 		\end{tabular}
-		\caption{Encrypted Original MNIST Classification Results}
+		\caption{Encrypted MNIST Classification Results: Original Autoencoder}
 		\label{table:basicAE_Encryption}
 	\end{center}
 \end{table}
+
+\noindent The classification result for the blurred MNIST data sets, averaged over three tests, is found in Table \ref{table:basicAE_Blurred}: Blurred MNIST Classification Results: Original Autoencoder. The highest accuracy of the data sets was 98.94\% for the Var0\_04 data set, which has the lowest variance of Gaussian noise at 0.04, as outlined in Section \ref{BlurringMethodology}: Blurring. The lowest accuracy of the data sets was 89.77\% for the Var0\_60 data set, which has the highest variance of Gaussian noise at 0.60. A linear increase in variance is once again observed to cause an exponential decrease in accuracy. As a comparison, the average classification accuracy in Ahmed et al. for blurred MNIST was 95.93\%, suggesting that our blurring technique has similar effect.
 
 \begin{table}[!h]
 	\begin{center}
@@ -616,10 +628,13 @@ Blurring and encryption will combine...along the range...
 			Var0\_60 & 0.8977\\
 			\hline
 		\end{tabular}
-		\caption{Blurred MNIST Classification Results}
+		\caption{Blurred MNIST Classification Results: Original Autoencoder}
 		\label{table:basicAE_Blurred}
 	\end{center}
 \end{table}
+
+~\newpage
+\noindent The classification result for the blurred and encrypted MNIST data sets, averaged over three tests, is found in Table \ref{table:basicAE_BlurredEncrypted}: Blurred and Encrypted MNIST Classification Results: Original Autoencoder. The highest accuracy of the data sets was 46.88\% for the 0\_04\_en data set, which has the lowest variance of Gaussian noise at 0.04, as outlined in Section \ref{BlurringMethodology}: Blurring. The lowest accuracy of the data sets, from data sets that converged on a solution, was 17.29\% for the 0\_36\_en data set, which has a variance of Gaussian noise of 0.36. Data sets with a higher variance of Gaussian noise did not converge on a solution and are marked as DNC (Did Not Converge). Similar to the blurred MNIST data sets, a linear increase in variance is observed to cause an exponential decrease in accuracy in these blurred and encrypted data sets. The rate of change of accuracy relative to variance of Gaussian noise is inherited from the blurred data sets as they are further encrypted.\\ 
 
 \begin{table}[!h]
 	\begin{center}
@@ -644,10 +659,13 @@ Blurring and encryption will combine...along the range...
 			0\_60\_en & DNC\\
 			\hline
 		\end{tabular}
-		\caption{Blurred and Encrypted MNIST Classification Results}
+		\caption{Blurred and Encrypted MNIST Classification Results: Original Autoencoder}
 		\label{table:basicAE_BlurredEncrypted}
 	\end{center}
 \end{table}
+
+~\newpage
+\noindent A graphical presentation of the classification results for the blurred MNIST data sets compared to the blurred and encrypted MNIST data sets can be observed in Figure \ref{GRAPH_OriginalAE}: Original Autoencoder Accuracy Comparison. As stated previously, we can observe that both sets inherit the characteristic that a linear increase in the variance of Gaussian noise results in an exponential decrease in classification accuracy. This is more apparent in the blurred and encrypted data sets for the Autoencoder neural network. We can also observe that further encryption has resulted in a profound decrease in classification accuracy for all blurred data sets, with the most blurred data sets not converging on a solution. While the encrypted-only MNIST produced a high classification accuracy result of 96.98\%, as stated in Table \ref{table:basicAE_Encryption}, the encryption of the blurred-only data sets with such a mild encryption algorithm has significantly decreased their classification accuracy, as found in Table \ref{table:basicAE_BlurredEncrypted} and observed in Figure \ref{GRAPH_OriginalAE} below. The encryption of the fairly accurate blurred data sets has resulted in a drop of more than 50\% in accuracy. The three data sets with the highest variance of Gaussian noise did not converge.
 
 \begin{figure}[h!]
 	\begin{center}
@@ -657,8 +675,9 @@ Blurring and encryption will combine...along the range...
 	\end{center}
 \end{figure} 
 
-\~newpage
-\subsection{Modified Autoencoder} 
+\subsection{Modified Autoencoder}\label{EvalModAE}
+
+The classification result for the non-secure MNIST data set is found in Table \ref{table:modAE_MNIST}: Non-Secure MNIST Classification Results: Modified Autoencoder. The data set produced an accuracy of 98.65\% averaged over three tests. The accuracy is similar to the 98.64\% accuracy result of the original Autoencoder neural network found in Section \ref{EvalOrigAE}.\\ 
 
 \begin{table}[!h]
 	\begin{center}
@@ -669,10 +688,12 @@ Blurring and encryption will combine...along the range...
 			MNIST & 0.9865\\
 			\hline
 		\end{tabular}
-		\caption{Original MNIST Classification Results}
+		\caption{Non-Secure MNIST Classification Results: Modified Autoencoder}
 		\label{table:modAE_MNIST}
 	\end{center}
 \end{table}
+
+\noindent The classification result for the encrypted MNIST data set is found in Table \ref{table:modAE_Encryption}: Encrypted MNIST Classification Results: Modified Autoencoder. The data set produced an accuracy of 97.27\% averaged over three tests. The change in accuracy is marginal when compared to the 96.98\% accuracy of the original Autoencoder found in Section \ref{EvalOrigAE}. The addition of batch normalization to the original Autoencoder has only slightly decreased inaccurate classification of encrypted MNIST images.\\
 
 \begin{table}[!h]
 	\begin{center}
@@ -680,13 +701,15 @@ Blurring and encryption will combine...along the range...
 			\hline
 			\textbf{Data-Set} & \textbf{Accuracy}\\
 			\hline
-			Encrypted-Only MNIST & 0.9727\\
+			Encrypted MNIST & 0.9727\\
 			\hline
 		\end{tabular}
-		\caption{Encrypted Original MNIST Classification Results}
+		\caption{Encrypted MNIST Classification Results: Modified Autoencoder}
 		\label{table:modAE_Encryption}
 	\end{center}
 \end{table}
+
+\noindent The classification result for the blurred MNIST data sets, averaged over three tests, is found in Table \ref{table:modAE_Blurred}: Blurred MNIST Classification Results: Modified Autoencoder. The highest accuracy of the data sets was 98.67\% for the Var0\_04 data set, which has the lowest variance of Gaussian noise at 0.04, as outlined in Section \ref{BlurringMethodology}. The lowest accuracy of the data sets was 90.93\% for the Var0\_60 data set, which has the highest variance of Gaussian noise at 0.60. Similar to the results of the original Autoencoder, as found in section \ref{EvalOrigAE}, a linear increase in variance is observed to cause an exponential decrease in accuracy.
 
 \begin{table}[!h]
 	\begin{center}
@@ -711,10 +734,13 @@ Blurring and encryption will combine...along the range...
 			Var0\_60 & 0.9093\\
 			\hline
 		\end{tabular}
-		\caption{Blurred MNIST Classification Results}
+		\caption{Blurred MNIST Classification Results: Modified Autoencoder}
 		\label{table:modAE_Blurred}
 	\end{center}
 \end{table}
+
+~\newpage
+\noindent The classification result for the blurred and encrypted MNIST data sets, averaged over three tests, is found in Table \ref{table:modAE_BlurredEncrypted}: Blurred and Encrypted MNIST Classification Results: Modified Autoencoder. The highest accuracy of the data sets was 86.56\% for the 0\_04\_en data set, which has the lowest variance of Gaussian noise at 0.04, as outlined in Section \ref{BlurringMethodology}: Blurring. The lowest accuracy of the data sets was 75.04\% for the 0\_60\_en data set, which has the highest variance of Gaussian noise at 0.60. Similar to the results of the original Autoencoder found in Section \ref{EvalOrigAE}, a linear increase in variance is observed to cause an exponential decrease in accuracy in these blurred and encrypted data sets, except for the 0\_12\_en data set which responds as an outlier with a lower than expected average accuracy of 81.52\%. Additional testing may increase this average. Section \ref{AEAnalysis}: Autoencoder Analysis addresses the observation that classification accuracy results for blurred and encrypted data sets is significantly higher in the modified Autoencoder when compared to the original Autoencoder.\\ 
 
 \begin{table}[!h]
 	\begin{center}
@@ -739,10 +765,13 @@ Blurring and encryption will combine...along the range...
 			0\_60\_en & 0.7504\\
 			\hline
 		\end{tabular}
-		\caption{Blurred and Encrypted MNIST Classification Results}
+		\caption{Blurred and Encrypted MNIST Classification Results: Modified Autoencoder}
 		\label{table:modAE_BlurredEncrypted}
 	\end{center}
 \end{table}
+
+~\newpage
+\noindent A graphical presentation of the classification results for the blurred MNIST data sets compared to the blurred and encrypted MNIST data sets can be observed in Figure \ref{GRAPH_ModifiedAE}: Modified Autoencoder Accuracy Comparison. As stated previously, we can observe that both sets inherit the characteristic that a linear increase in the variance of Gaussian noise results in a slightly exponential decrease in classification accuracy. We can also observe that further encryption has resulted in a marginal decrease in classification accuracy for all blurred data sets. While the encrypted-only MNIST produced a high classification accuracy result of 97.27\%, as stated in Table \ref{table:modAE_Encryption}, the encryption of the blurred-only data sets with such a mild encryption algorithm has marginally decreased their classification accuracy, as found in Table \ref{table:modAE_BlurredEncrypted} and observed in Figure \ref{GRAPH_ModifiedAE} below. The encryption of the blurred data sets has resulted in average in a drop of roughly 15\% in accuracy.
 
 \begin{figure}[h!]
 	\begin{center}
@@ -753,7 +782,9 @@ Blurring and encryption will combine...along the range...
 \end{figure} 
 
 ~\newpage
-\subsection{Autoencoder Analysis}
+\subsection{Autoencoder Analysis}\label{AEAnalysis}
+
+The classification results of the original and modified Autoencoder for the blurred MNIST data sets can be observed in Figure \ref{GRAPH_COMP_AE_BL}: Autoencoder Accuracy Comparison - Blurred. We observe that the addition of batch normalization has not increased classification accuracy in the modified Autoencoder for most data sets, however a slight divergence is apparent with larger variances of Gaussian noise. The exponential effect of linearly increasing the variance of Gaussian noise is seen in both neural networks.\\
 
 \begin{figure}[h!]
 	\begin{center}
@@ -763,6 +794,9 @@ Blurring and encryption will combine...along the range...
 	\end{center}
 \end{figure}
 
+~\newpage
+\noindent The classification results of the original and modified Autoencoder for the blurred and encrypted MNIST data sets can be observed in Figure \ref{GRAPH_COMP_AE_BEN}: Autoencoder Accuracy Comparison - Blurred and Encrypted. We observe that the addition of batch normalization has significantly increased classification accuracy in the modified Autoencoder. The data set with the highest accuracy when using the original VGGNet, 0\_04\_en with 46.88\%, has an accuracy of 86.56\% when using the modified Autoencoder. The data set with the lowest converged accuracy when using the original Autoencoder, 0\_36\_en with 17.29\%, has an accuracy of 81.55\% when using the modified Autoencoder. The stabilizing effect of batch normalization on internal covariate shift is clear from these results.\\
+
 \begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=1.0\textwidth]{Mod_vs_Or_AE_BEN}
@@ -771,15 +805,24 @@ Blurring and encryption will combine...along the range...
 	\end{center}
 \end{figure}
 
-~\newpage 
-
+~\newpage
 \section{Conclusions}
+
+\noindent This report presented findings on the classification accuracy of data that has been both blurred and encrypted. We had hypothesized that the classification accuracy of such data in VGGNet and Autoencoder neural networks would be significantly lower than the classification accuracy of data that has been either blurred or encrypted. We further hypothesized that the incorporation of batch normalization into these networks would improve the classification accuracy of the data that had been both blurred and encrypted.\\
+
+\noindent The results of our study has shown that basic VGGNet and Autoencoder neural networks are very accurate in classifying MNIST images that have been blurred by a Gaussian function or encrypted using block encryption techniques. We also found that the basic forms of these neural networks are much less accurate in classifying data that has been both blurred and encrypted, with the VGGNet producing slightly better results than the Autoencoder in such a capacity. It was also noted that a linear increase in variance of Gaussian noise caused an exponential decrease in classification accuracy. The classification results noted here can be observed in Section \ref{EvalOrigVGG} and Section \ref{EvalOrigAE}.\\
+
+\noindent The VGGNet and Autoencoder neural networks produced much better results at classifying data that has been blurred and encrypted after they were modified to include batch normalization. This is due to the stabilizing effect of batch normalization on internal covariate shift. The modified VGGNet neural network had a slightly higher accuracy than the modified Autoencoder in classifying the blurred and encrypted MNIST data. The classification results noted here can be observed in Section \ref{EvalModVGG} and Section \ref{EvalModAE}.\\
+
+\noindent This work addressed an interesting research problem in the field of security, specifically the classification of noisy data. We hope that the finding regarding the benefit of the application of batch normalization into neural networks is helpful in solving problems suffering from internal covariate shift in the future.\\
+
+~\newpage
 \section{Acknowledgments}
 
-teacher and autoencoder website, and https://www.floydhub.com/
+This work was supported by Dr. He of McMaster University. I would also like to acknowledge Aditya Sharma for the terrific Autoencoder tutorial hosted at the website DataCamp.  
 
 
-\newpage
+~\newpage
 
 \bibliographystyle {plainnat}
 \bibliography {../../References}
