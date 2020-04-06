@@ -104,78 +104,25 @@ in the abstract
 ~\newpage
 \section{Introduction}
 
-Social networking sites have leveraged data storage facilities of third parties in their business model. These third party data facilities provide the basic service of storing encrypted user data for the social service provider but could also provide advanced services such as classification of the data. 
-The classified data can be used to make friend or hobby suggestions for the social media user, or could alternatively be used by the social media company or third party for the development of privacy protected meta-data for resale. 
+Social networking sites have been leveraging technical solutions of third parties into their business model. As \cite{ahmed2018obfuscated} discuss, these third parties provide secure data storage and classification services for the social networking sites. Through the use of obfuscated data classification techniques the stored data is used to make friend or hobby suggestions for the social media user without ever compromising privacy. Alternatively to this business model described by Ahmed et al., we believe that third parties providing such services could also gather metadata for resale without compromising the privacy of their client's users.\\
 
-Currently studies have focused on the classification of data that has been obfuscated by blurring or encryption techniques. Ahmed et al have focused on using VGGNet and auto-encoder networks to classify images that have been blurred and encrypted. 
+\noindent In regard to obfuscated data classification, studies such as the one conducted by Ahmed et al. have focused on data that has been obfuscated by either blurring or encryption techniques. Furthermore, Ahmed et al. have specifically focused on using Visual Geometry Group networks (VGGNet) and Autoencoder networks to classify obfuscated data.\\ 
 
-This study will attempt to use similar VGGNet and auto-encoder networks from Ahmed et al to classify images that have been obfuscated by both blurring and encryption. The objective of this, using the social media model, is to enable third party data storage facilities to make friend or hobby suggestions or gather meta-data using noisy data. As users are unlikley to upload noisy single images to social media sites, our model will focus on noisy data that is uploaded in the form of video frames. A poor quality video camera, electrical interference, and unstable recording could result in a non negligible amount of noisy video frames uploaded into the third party server. This study will attempt to measure the effectiveness of classification of objects within such noisy frames for the purpose of generating useful user data. 
+\noindent This study will again attempt to use similar style networks as Ahmed et al. to classify images that have been obfuscated. Building on their work, this study will attempt to classify images that have been obfuscated by both blurring and encryption techniques. The objective of this, using the social media model described above, is to enable third party data service providers to make friend or hobby suggestions and gather metadata using noisy data. We believe that noisy data can provide meaningful user information and that it should not be overlooked. While uploaded images are not likely to be noisy, a non negligible number of uploaded video frames could be impacted by intermittent light interference, slow video focus, and unstable recording. Information gathered from these frames could be used to build a better model of the social media user and their environment.\\ 
 
-Motivation: (mix with above)
-In this scenario, noisy photos and/or videos are encrypted and uploaded to a cloud server which then classifies the images for product and/or friend recommendations. The videos are encrypted due to security risks with the cloud server, including due to a scenario where the cloud server is a third party service tasked with classification but without the authority to view unencrypted content. This is a similar application to the work of Ahmed et al. discussed in Section \ref{Related_Work}; however, the subject would be uploading noisy photos or video frames due to a poor quality camera or unstable recording. In such a scenario the subject would likely be uploading all of their digital content from their hardware without manually filtering for good quality images.
+\noindent We believe that the incorporation of multiple obfuscation techniques on test data will have a profound negative effect on the classification accuracy of the neural network models used by Ahmed et al. relative to their classification accuracy on data concealed by a single obfuscation technique. The additional obfuscation of the data serves to further eliminates patterns and increases convolution. In regard to neural network processing of this data, this has the effect of increasing the rate and size of changes to network parameters during learning. These changes are further amplified in deeper layers of the network. As layers in the network stay in a prolonged state of non-trivial adaptations, the network has difficulty efficiently converging on a final solution for its network parameters. As \cite{ioffe2015batch} designate, this is known as internal covariate shift. In order to mitigate this effect we believe that a solution is the incorporation of batch normalization into Ahmed et al.'s models. Batch normalization will scale the activation and output of nodes and effectively normalize input into each layer, better allowing the model to efficiently and effectively converge on a solution.\\
 
-Impact: 
-Along with the scenario listed above, the impact of this research can be extended to any application that may attempt to classify noisy data that has been encrypted for the sake of privacy. Noisy passive security camera footage may be classified by third party data storage systems. Analog data that is securely stored can also be classified for anomalies or meta-features by third party storage systems. Overall, the impact of the study will reveal how effective the studies classification models are in extracting features from over processed data. 
+\noindent Further to the scenario above, the impact and contribution of this research  can be extended to applications of classifying encrypted noisy data. For instance, noisy passive security camera footage may be classified while in a secure state. Additionally, analog data that is securely stored can also be classified for anomalies or meta-features by third party storage systems. Overall, the impact of this study is the revelation of the effectiveness in classifying secure noisy data using VGGNet and Autoencoder neural networks with and without a batch normalization technique.\\
 
-
-The VGGNet and auto-encoder models found in Ahmed et al have not been used to classify images that have been blurred and then encrypted. We will first use these models because... their strengths are... weaknesses may be...
-
-Upon classification using the above models, we will attempt to add... this could have the effect of...
-
-The majo rcontributions are...ahmed et al...other paper...vggnet...eutoencoder..
-
-The organization of the paper is...
-
-
-
-the introduction addresses what the study will entail. 
-
-What is the problem to be solved
-
-Why it is important (motivation, impact)
-
-Why your solution is novel and suitable 
-to solve the problem
-
-Why previous efforts do not work
-
-What is the brief idea
-
-What are the major Contributions
-
-Organization of the paper\\
-
-Research Questions:
-\begin{enumerate}
-	\item How effective is the classifier from Ahmed et al.'s paper on MNIST and CIFAR-10 data sets when the images have first been blurred using the Gaussian technique (across varying standard deviations) and then encrypted using AES-128 ECB?
-	\item Can Ahmed et al's classifier be improved to classify blurred and then encrypted images using the residual learning and batch normalization techniques from Zhang et al.'s paper?
-\end{enumerate}
-
-\subsection{Problem Statement}\label{ps}
-There is considerable research that has been done on the subject of obfuscated image classification using neural networks. Recent research, some of which is outlined in Section \ref{Related_Work}, focuses on the classification of images that have been obfuscated using blurring or encryption. First, this project aims to use a current classification model to classify images that have been blurred and encrypted, and then analyze the results. The second half of this project aims to explore the development of a new model by testing the combination of different methods to classify images that have been blurred and encrypted.
-
-\subsection{Motivations}\label{motivations}
-There are several applications for which this project could contribute to developing a solution:
-
-\subsubsection{Grainy Photos Uploaded for Secure Recommendation}
-In this scenario, noisy photos and/or videos are encrypted and uploaded to a cloud server which then classifies the images for product and/or friend recommendations. The videos are encrypted due to security risks with the cloud server, including due to a scenario where the cloud server is a third party service tasked with classification but without the authority to view unencrypted content. This is a similar application to the work of Ahmed et al. discussed in Section \ref{Related_Work}; however, the subject would be uploading noisy photos or video frames due to a poor quality camera or unstable recording. In such a scenario the subject would likely be uploading all of their digital content from their hardware without manually filtering for good quality images.
-
-\subsubsection{Grainy Security Footage Requiring Secure Categorization}
-In this scenario, noisy security photos and/or video frames due to interference or poor hardware are encrypted and sent to storage where categorization of such encrypted passive footage is required. This scenario could occur if a third party service is tasked with classification, perhaps for the sake of some general security analysis, but does not have the authority to view unencrypted content. The scenario could similarly occur if the same party that recorded the footage is tasked with classification, once again for the sake of general security analysis, but also without the authority to view unencrypted content. The latter scenario could be a government entity that records clandestine security footage for analysis but does not have the legal authority to hold the unencrypted footage, perhaps due to privacy laws. 
-
-
-\subsection{Objectives}\label{objectives}
-The first objective of this study is to classify obfuscated images, using current image classification models, that have been both blurred and encrypted. This is novel as currently classification of obfuscated images deals with images that have been either blurred or encrypted. The second objective is to begin work on a novel classifier that will be specifically designed to classify images that have been blurred and then encrypted.
+\noindent Work related to our research can be found in Section \ref{RelatedWork} of this report. Background information, including data from related work which our research builds on found in Section \ref{Background}. The methodology of our research, including the techniques we used for image obfuscation and our neural network models is outlines in Section \ref{Methodology}. The classification results of our models are presented in Section \ref{Evaluations}. Concluding remarks are found in Section \ref{Conclusions}.\\
 
 ~\newpage
-\section{Related Work}
-The problem addressed in this paper is the classification of retrieved objects from obfuscated data. The works discussed below address related studies and relevant data classification approaches.
+\section{Related Work}\label{RelatedWork}
+The problem addressed in this paper is the classification of data obfuscated by multiple obfuscation techniques. The works discussed below address related studies and relevant data classification approaches and techniques.
 
-Maybe each should be a subsection?
-\begin{enumerate}
-	\item ``Obfuscated image classification for secure image-centric friend recommendation" by Ahmed et al.\citep{ahmed2018obfuscated}:\\
-	
-	Ahmed et al. focus on the classification of images that have been obfuscated using one of several techniques, including blurring or encryption. Their motivation is a scenario where a third party will need to classify secure private social media images for the purpose of friend recommendations. 
+\subsection{Obfuscated image classification for secure image-centric friend recommendation}
+
+\noindent \cite{ahmed2018obfuscated} focus on the classification of images that have been obfuscated using one of several techniques, including blurring or encryption. Their motivation is a scenario where a third party cloud storage entity will classify secure private social media images for a social media provider with the purpose of generating friend recommendations for social media users. The model is shown in Figure \ref{Ahmed_social_model} below.
 	
 	\begin{figure}[h!]
 		\begin{center}
@@ -185,13 +132,11 @@ Maybe each should be a subsection?
 		\end{center}
 	\end{figure}
 	
+\noindent In their paper, Ahmed et al. use Gaussian blurring in two dimensions and AES-128 encryption in ECB block cipher mode for obfuscation of MNIST, CIFAR-10, and MirFlickr-25K data sets. They classify these obfuscated data sets using a deep convolutional neural network based on \cite{simonyan2014very} Visual Geometry Group (VGGNet) as well as an Autoencoder neural network. Specifically, they classify blurred images using the deep convolutional network and the encrypted images using the Autoencoder network. Their models and results are described in Section \ref{Background} of this report. \\
 	
-	They use Gaussian blurring in two dimensions and AES-128 encryption in ECB block cipher mode for such obfuscation of MNIST, CIFAR-10, and MirFlickr-25K data sets. Ahmed et al. classify these obfuscated data-sets using an auto-encoder neural network as well as a deep convolutional neural network based on Simonyan and Zisserman's Visual Geometry Group (VGGNet) \cite{simonyan2014very}. Specifically, they classify encrypted images using auto-encoder and blurred images using a deep convolutional network. 
-	The results are discussed in Section \ref{Background} of this report. \\
+\subsection{Very Deep Convolutional Networks for Large-Scale Image Recognition}
 	
-	\item ``Very Deep Convolutional Networks for Large-Scale Image Recognition"
-	\citep{simonyan2014very}:
-	Simonyan and Zisserman evaluate networks of increased depth, 11-19 layers, and very small convolutional filters (3 x 3). They describe several network configurations for validating and classifying 224 x 224 RGB images. The networks incorporate several convolutional layers and filters, several max-pooling layers, and several fully-connected layers. The hidden layers of their networks are equipped with ReLU.
+\noindent \cite{simonyan2014very} evaluate networks of increased depth, 11-19 layers, and very small convolutional filters (3 x 3). They describe several network configurations for validating and classifying 224 x 224 RGB images. The networks incorporate several convolutional layers and filters, several max-pooling layers, and several fully-connected layers. The hidden layers of their networks are equipped with the ReLU activation function. The network configurations are described in Figure \ref{ConvNet} below.
 	
 	\begin{figure}[h!]
 		\begin{center}
@@ -201,64 +146,49 @@ Maybe each should be a subsection?
 		\end{center}
 	\end{figure}
 	
-	The ConvNet training is carried out by optimizing the multinational logistic regression objective using mini-batch gradient descent. The paper demonstrated that an increased representation depth is beneficial for classification accuracy.
+\noindent The ConvNet training is carried out by optimizing the multinational logistic regression objective using mini-batch gradient descent. The paper demonstrated that an increased neural network representation depth is beneficial for classification accuracy. Simonyan and Zisserman's network's are regarded as VGGNet in reference to the University of Oxford's Visual Geometry Group, of which they were members at the time of publication of this paper.\\ 
 	
-	\item ``Beyond a Gaussian Denoiser: Residual Learning of Deep CNN for Image Denoising" by Zhang et al.\citep{zhang2017beyond}:\\
+\subsection{Beyond a Gaussian Denoiser: Residual Learning of Deep CNN for Image Denoising}
+
+\cite{zhang2017beyond} focuses on developing feed forward denoising convolutional neural networks - specifically for Gaussian denoising. The proposed DnCNN uses residual learning formulation to learn and batch normalization to improve speed and performance. Batch normalization alleviates the internal covariate shift by incorporating a normalization step and a scale and shift step. The paper found that batch normalization can greatly benefit neural network learning performance and was conductive in our decision to include the technique in our neural networks.\\
 	
-	REMOVE RESIDUAL LEARNING
-	
-	This paper focuses on a feed forward denoising convolutional neural networks - specifically for Gaussian denoising. The proposed DnCNN uses residual learning formulation to learn and batch normalization to improve speed and performance. Residual learning uses residual mapping to allow information to flow more easily between layers of a deep neural network
-	Batch normalization alleviates the `internal covariate shift' by incorporating a normalization step and a scale and shift step.
-	
-	The contributions of this work are summarized as follows:
-	
-	We propose an end-to-end trainable deep CNN for Gaussian denoising. In contrast to the existing deep neural network-based methods which directly estimate the latent clean image, the network adopts the residual learning strategy to remove the latent clean image from noisy observation.
-	
-	We find that residual learning and batch normalization can greatly benefit the CNN learning as they can not only speed up the training but also boost the denoising performance. For Gaussian denoising with a certain noise level, DnCNN outperforms state-of-the-art methods in terms of both quantitative metrics and visual quality.
-	
-	Our DnCNN can be easily extended to handle general image denoising tasks. We can train a single DnCNN model for blind Gaussian denoising, and achieve better performance than the competing methods trained for a specific noise level. Moreover, it is promising to solve three general image denoising tasks, i.e., blind Gaussian denoising, SISR, and JPEG deblocking, with only a single DnCNN model.
-	
-	 The proposed model of the paper has a convolutional and rectified linear unit (ReLU) first layer which uses filters to generate feature maps and ReLU for nonlinearlity. The model then has several convolutional, batch normalization, and ReLU layers. Finally a convolutional layer is used to reconstruct the output. The results of this model are a higher peak signal to noise ratio (PSNR) than competing denoisers on the BSD68 data set. 
-	
-	Extensive experiments show that, our DnCNN trained with a certain noise level can yield better Gaussian denoising results than state-of-the-art methods 
-	
-	\item ``Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift''
-	
-	This is the main batch normalization paper?
-\end{enumerate}
+\subsection{Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift}
+
+\cite{ioffe2015batch} designate the difficulty of training deep neural networks due to the compounding effects of node initialization on deeper layers as internal covariate shift. They outline the difficulty in convergence that deep neural networks experience when they need to continuously adapt to new distributions of layer's inputs. Ioffe and Szegedy suggest ensuring that the distribution of non-linearity inputs remains more stable as the network trains in order to ensure that the optimizer is less likely to get stuck in the saturated regime. They propose a new mechanism, which they call batch normalization, that reduces internal covariate shift via additional neural network steps that fix the means and variances of layer inputs.\\
 
 ~\newpage
 \section{Background}\label{Background}
 
-discuss VGGNet and autoencoder, as well as batch normalization, and present results from Ahmed et al (and other paper?) and then point to the results I got from trying to emulate their models (prior to BL + EC or batch normalization)
+\noindent As our report intends to test the accuracy of classifying images obfuscated by multiple techniques on the neural network models of \cite{ahmed2018obfuscated}, this section will briefly outline the methodology and results of their framework. This end of this section will cover the batch normalization technique which we intend to introduce into Ahmed et al.'s models. \\
 
-----from the paper:
+\noindent Ahmed et al. used a Gaussian low pass filter with size [x, y] and standard deviation $\sigma$ as shown in Figure \ref{gaussianahmed} to blur the MNIST data set. This was implemented using the fspecial tool of the MATLAB image filtering toolbox. \\
 
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{gaussianahmed}
+		\caption{Ahmed et al. Gaussian Filter}
+		\label{gaussianahmed}
+	\end{center}
+\end{figure}
 
-2) Batch Normalization:
+\noindent To encrypt the images, Ahmed et al. used AES-128 in Electronic Codebook mode. This was implemented using the GitHub JImageEncryptor library by raphleon.\\ 
 
-Mini-batch stochastic gradient descent (SGD) has been widely used in training CNN models. Despite the simplicity and effectiveness of mini-batch SGD, its training efficiency is largely reduced by internal covariate shift [28], i.e., changes in the distributions of internal nonlinearity inputs during training. Batch normalization [28] is proposed to alleviate the internal covariate shift by incorporating a normalization step and a scale and shift step before the nonlinearity in each layer. For batch normalization, only two parameters per activation are added, and they can be updated with back-propagation. Batch normalization enjoys several merits, such as fast training, better performance, and low sensitivity to initialization. For further details on batch normalization, please refer to [28].
+\noindent Ahmed et al. used an Autoencoder neural network as well as \cite{simonyan2014very}'s VGGNet neural network in their study. Their Autoencoder framework included a two step training process of pre-training and finetuning, as shown in Figure \ref{nnahmed}. Ahmed et al. did not specify which VGGNet of those listed in Figure \ref{ConvNet} was used for their study, an assumption was made in our methodology in Section \ref{Methodology}.\\
 
-By far, no work has been done on studying batch normalization for CNN-based image denoising. We empirically find that, the integration of batch normalization can result in fast and stable training and better denoising performance.
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{nnahmed}
+		\caption{Ahmed et al. Autoencoder Architecture}
+		\label{nnahmed}
+	\end{center}
+\end{figure}
 
-----
+\noindent Ahmed et al. had the following results on the MNIST data set: An average accuracy of 99.503\% on the non-secure version, 95.93\% on the blurred version, and 83.93\% on the encrypted version.\\
 
-
-
-The background discusses existing data on your topic, the problem statement is what you identify as an issue with supporting data. 
-
-Have figures here from the related work.
-
-The pr
-
-
-
-Maybe problem statement at end of this?
-
-Also view her email to me
+\noindent We intend to classify the MNIST dataset after it has been both blurred and encrypted with similar techniques to Ahmed et al. We predict that the classification accuracy will be significantly lower than classification on the data set when it is either blurred or encrypted due to the additional convolution of the data. We believe that this convolution will cause instability in the form of internal covariate shift and we intend to mitigate it by the addition of a batch normalization technique into Ahmed et al.'s models. As \cite{ioffe2015batch} describe in their paper, this technique will help to stabilize the network. They proposed that batch normalization can alleviate the internal covariate shift by incorporating of two steps into the network; a normalization step and a scale and shift step before the non-linearity in each layer.\\
 
 ~\newpage
-\section{Methodology}
+\section{Methodology}\label{Methodology}
 
 Our study will focus on classification of obfuscated data by blurring and encryption using models similar to those used by Ahmed et al. - a VGGNet and an autoencoder network.
 
@@ -329,7 +259,7 @@ Autoencoder based on .... which we will refer to as 'original Autoencoder' in th
 \subsection{Modified Autoencoder} 
  
  ~\newpage
-\section{Evaluations}
+\section{Evaluations}\label{Evaluations}
 \subsection{Original VGGNet}\label{EvalOrigVGG}
 
 The classification result for the non-secure MNIST data set is found in Table \ref{table:basicVGG_MNIST}: Non-Secure MNIST Classification Results: Original VGGNet. The data set produced an accuracy of 99.31\% averaged over three tests. This accuracy is similar to the 99.503\% accuracy of Ahmed et al. for non-secure MNIST.\\ 
@@ -806,7 +736,7 @@ The classification results of the original and modified Autoencoder for the blur
 \end{figure}
 
 ~\newpage
-\section{Conclusions}
+\section{Conclusions}\label{Conclusions}
 
 \noindent This report presented findings on the classification accuracy of data that has been both blurred and encrypted. We had hypothesized that the classification accuracy of such data in VGGNet and Autoencoder neural networks would be significantly lower than the classification accuracy of data that has been either blurred or encrypted. We further hypothesized that the incorporation of batch normalization into these networks would improve the classification accuracy of the data that had been both blurred and encrypted.\\
 
