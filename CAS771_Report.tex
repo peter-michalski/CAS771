@@ -91,15 +91,9 @@
 
 \section{Abstract}
 
-Preview of the paper
+We examined the classification accuracy of VGGNet and Autoencoder neural networks on data sets that have been obfuscated by both blurring and encryption. The MNIST data set was obfuscated along a variance of Gaussian noise. A block encryption algorithm was then used to further obfuscate the data.
+Building on related work, the classification accuracy of these multi-obfuscated data sets was compared to the classification accuracy of data sets that were either blurred or encrypted. Classification accuracy significantly dropped for data sets that were obfuscated by multiple techniques and we attribute this to internal covariate shift. In order to mitigate this effect, we incorporated batch normalization into out networks in order to improve our classification accuracy results. Batch normalization significantly improved the classification accuracy of data that had been both blurred and encrypted. We hope that our findings regarding the application of batch normalization on multi-obfuscated data is helpful in solving problems suffering from internal covariate shift in the future.\\
 
-One paragraph (150 to 250 words)
-
-Summarize the objective, methods, 
-results, and impact
-
-Avoid using abbreviations or citations 
-in the abstract
 
 ~\newpage
 \section{Introduction}
@@ -190,17 +184,10 @@ The problem addressed in this paper is the classification of data obfuscated by 
 ~\newpage
 \section{Methodology}\label{Methodology}
 
-Our study will focus on classification of obfuscated data by blurring and encryption using models similar to those used by Ahmed et al. - a VGGNet and an autoencoder network.
-
-We will be examining classification of 4 sets of data on both the VGGNet and autoencode style models found in Ahmed et al. We will then re-examine classification of these 4 sets on these 2 models after the models have been adjusted to include 
-
-
 \subsection{Image Obfuscation}
-\subsubsection{Blurring}\label{BlurringMethodology}
-\subsubsection{Encryption}\label{EncryptionMethodology}
-We will be using th MNIST dataset to conduct our classification....describe it.
 
-The first set of data will be non-secure MNIST, the second set will be MNIST obfuscated by blurring using Gaussian..., the third set will be MNIST obfuscated by encrypted using block encrytpion, the fourth will be MNIST obfuscated blurred using Gaussian and then encrptyed using block encyprtion. 
+\noindent We begin by downloading a copy of the MNIST data set from \href{http://yann.lecun.com/exdb/mnist/}{here}. 
+We will refer to this original MNIST data set as non-secure. The MNIST data set consist of 48,000 train and 12,000 test images of hand written digits. A sample of such images is shown in Figure \ref{MNIST_BASE}.\\ 
 
 \begin{figure}[h!]
 	\begin{center}
@@ -210,53 +197,64 @@ The first set of data will be non-secure MNIST, the second set will be MNIST obf
 	\end{center}
 \end{figure}
 
+\noindent We will then generate a set of secure (obfuscated) versions of the MNIST data set. The associated MATLAB files can be viewed in the GitLab repo found \href{https://github.com/peter-michalski/CAS771/tree/master/MATLAB}{here}.\\
 
-Obfuscation of the data using the blurred method will be conducted...the blurred will be conducted along a range of xxxx values.  
+~\newpage
+\subsubsection{Blurring}\label{BlurringMethodology}
 
- For the blurring, we have used the Matlab image filtering toolbox imnoise
- 
- 
+We create 8 blurred MNIST data sets, each including training and testing data, using the imnoise MATLAB function. The data sets differ in the variance of Gaussian noise. The first data set we create is labeled Var0\_04 and has a variance of Gaussian noise setting of 0.04. The second data set is labeled Var0\_12 and has a variance of Gaussian noise setting of 0.12. We continue to increment the variance of Gaussian noise by 0.08 until we have our 8th data set labeled Var0\_60. A sample of such images is shown in Figure \ref{MNIST_BLURRED}.\\
+
  \begin{figure}[h!]
- 	\begin{center}
- 		\includegraphics[width=0.8\textwidth]{MNIST_BLUR}
- 		\caption{Blurred MNIST}
- 		\label{MNIST_BLURRED}
- 	\end{center}
- \end{figure}
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{MNIST_BLUR}
+		\caption{Blurred MNIST}
+		\label{MNIST_BLURRED}
+	\end{center}
+\end{figure}
 
- 
- Obfuscation of the data using the encryption method will be conducted using block encryption...link..how does block encrpytion work? state simialr to aes ecb 128 used by ahmed et al..
- 
+~\newpage
+\subsubsection{Encryption}\label{EncryptionMethodology}
+
+\noindent We then create an encrypted-only version of MNIST using a simple block encryption algorithm. A sample of such images is shown in Figure \ref{MNIST_ENCRYPTED}.\\
+
 \begin{figure}[h!]
 	\begin{center}
-		\includegraphics[width=0.8\textwidth]{MNIST_EN}
+		\includegraphics[width=0.5\textwidth]{MNIST_EN}
 		\caption{Encrypted MNIST}
 		\label{MNIST_ENCRYPTED}
 	\end{center}
 \end{figure}
 
-
-Blurring and encryption will combine...along the range...
+\noindent Finally, we created data sets that have been both blurred and encrypted by running our blurred data sets through our encryption algorithm. 
+The first data set we create is labeled 0\_04\_en and is the encrypted version of Var0\_04. We follow this with procedure with our remaining 7 blurred data sets. A sample of such images is shown in Figure \ref{MNIST_BLURRED_EN}.\\
 
 \begin{figure}[h!]
 	\begin{center}
-		\includegraphics[width=0.8\textwidth]{MNIST_BLUR_ER}
+		\includegraphics[width=0.7\textwidth]{MNIST_BLUR_ER}
 		\caption{Blurred and Encrypted MNIST}
 		\label{MNIST_BLURRED_EN}
 	\end{center}
 \end{figure} 
  
+~\newpage 
 \subsection{Original VGGNet} 
 
-VGGNet based on .... which we will refer to as 'original VGGNet' in the remainder of this report
+\noindent Similar to \cite{ahmed2018obfuscated} we use a VGGNet network from \cite{simonyan2014very} to measure classification accuracy. Ahmed et. al did not specify which VGGNet model they specifically used. We have decided to use VGG13 as the MNIST data is neither large nor complex and should not require a deeper neural network like a VGG16 or VGG19. The VGG13 network can be found 
+\href{https://github.com/peter-michalski/CAS771/blob/master/python/VGG/MYinitial_VGG.py}{here}.\\
 
 \subsection{Modified VGGNet} 
 
+\noindent We incorporated batch normalization into our VGGNet neural network by adding a batch normalization step after each 2D convolutional layer. The updated VGG13 network can be found \href{https://github.com/peter-michalski/CAS771/blob/master/python/VGG/MYupdated_VGG.py}{here}.\\
+
 \subsection{Original Autoencoder} 
 
-Autoencoder based on .... which we will refer to as 'original Autoencoder' in the remainder of this report
+\noindent \cite{ahmed2018obfuscated} also used a two-step Autoencoder network to measure classification accuracy. Similarly, our network has a two-step training and fine tuning architecture. The Autoencoder network can be found 
+\href{https://github.com/peter-michalski/CAS771/blob/master/python/Autoencoder/MYoriginal_autoencoder.py}{here}.\\
 
 \subsection{Modified Autoencoder} 
+
+We incorporated batch normalization into our Autoencoder neural network by adding a batch normalization step after each 2D convolutional layer. The updated Autoencoder network can be found \href{https://github.com/peter-michalski/CAS771/blob/master/python/Autoencoder/MYupgraded_autoencoder.py}{here}.\\
+
  
  ~\newpage
 \section{Evaluations}\label{Evaluations}
@@ -744,7 +742,7 @@ The classification results of the original and modified Autoencoder for the blur
 
 \noindent The VGGNet and Autoencoder neural networks produced much better results at classifying data that has been blurred and encrypted after they were modified to include batch normalization. This is due to the stabilizing effect of batch normalization on internal covariate shift. The modified VGGNet neural network had a slightly higher accuracy than the modified Autoencoder in classifying the blurred and encrypted MNIST data. The classification results noted here can be observed in Section \ref{EvalModVGG} and Section \ref{EvalModAE}.\\
 
-\noindent This work addressed an interesting research problem in the field of security, specifically the classification of noisy data. We hope that the finding regarding the benefit of the application of batch normalization into neural networks is helpful in solving problems suffering from internal covariate shift in the future.\\
+\noindent This work addressed an interesting research problem in the field of security, specifically the classification of noisy data.We hope that our findings regarding the application of batch normalization on multi-obfuscated data is helpful in solving problems suffering from internal covariate shift in the future.\\
 
 ~\newpage
 \section{Acknowledgments}
